@@ -72,7 +72,7 @@ year => 124, month => 9, day => 7
 %W	33
 %y	24
 %Y	124
-%*	St Fénéon ès Liens
+%*	St. Fénéon in Bonds
 year => 124, month => 6, day => 29
 %%	%
 %A	Hunyadi

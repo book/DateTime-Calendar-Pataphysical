@@ -482,10 +482,15 @@ sub compare
 }
 
 
-my @feasts;
+my (@feasts, @feasts_en);
 
 sub feast {
-    return $feasts[ $_[0]->day_of_year_0 ];
+    my $self = shift;
+    if (ref($self->{language}) =~ /English$/) {
+        return $feasts_en[ $self->day_of_year_0 ];
+    } else {
+        return $feasts[ $self->day_of_year_0 ];
+    }
 }
 
 # Feasts from
@@ -880,6 +885,70 @@ Disparition de l'Ancien Breughel, incendiaire
 St Priape, franc-tireur
 Transfixion de Ste Messaline
 Le Termès
+EOF
+
+# My own translations
+@feasts_en = @feasts;
+@feasts_en[232..289] = split /\n+/, <<EOF;
+Holy Crocodiles, crocodiles
+Feast of the floodgates
+Holy Trolls, jumping-jacks
+St. Susan Calvin, doctor
+St. Handful, widow and St. Jutte, recluse
+St. Oneille, trollop
+St. Fénéon in Bonds
+St. Bougrelas, prince
+St. Boleslas and St. Ladislas, Poles
+St. Earwig, Barnabite
+Explosion of the Palotin
+Reprobation of Labour
+Evasion of St. Leonardo da Vinci, illusionist
+St. Equivoque, sansculotte
+Adoration of the Spike
+Deploration of St. Achras, breeder of polyhedrons
+St. Macrotatoure, train-bearer
+Rowing
+Occultation of St. Gauguin, oceanid
+St. Ti Belot, disciple
+Occultation of His Magnificence, Dr. Sandomir
+Holy Palotins of Phynances
+Holy Quatrezoneilles, Herdanpo, Mousched-Gogh, palotins
+St. Lumelle, horsewoman
+Holy Potassons, acolytes
+St. Prétentaine, virgin
+St. Hay, corypheus
+Nativity of St. Satie, Grand Partiary of the Church of Art
+Erratum
+
+Delivery of St. Joan, papess
+The Mustarder of the Pope
+St. Seat, underpope
+Nativity of St. H. Rousseau, customs officer
+St Crouducul, trooper
+St Cucufat, maecenas
+Nativity of Mr. Plume, proprietor
+Cuckoldry of Father Ubu
+Emptying
+St. Barbapoux, lover
+St. Memnon, dunnikin diver
+Holy Miches, catechumens
+St. Lunette, hermitess
+St Sphincter, professed monk
+Holy Serpents of Bronze
+Nativity of St. Donatien A. François
+St. Woland, professor
+St. Anal, cordelier and St. Trots, anagogic
+St. Fétatoire, super
+St. Colombine, expurged
+St. Pyrotechnics, illuminated
+Pataphysical Ontogeny
+Interpretation of Umour
+St. Purge, midwife
+Apparition of King Ubu
+St. Barbecue, naiad
+Holy Long and Short, police officers
+St. Raca, hypocrite
+Defeat of the Boor
 EOF
 
 1;

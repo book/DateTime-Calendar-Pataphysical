@@ -1,7 +1,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 13;
+use Test::More tests => 14;
 use DateTime::Calendar::Pataphysical;
 
 #########################
@@ -51,3 +51,7 @@ $d = DateTime::Calendar::Pataphysical->last_day_of_month(
             year => 130, month => 1, language => 'Dutch' );
 isa_ok( $d->language, 'DateTime::Language::Dutch',
         'last_day_of_month() accepts language' );
+
+$d = DateTime::Calendar::Pataphysical->new(
+            year => 130, month => 9, day => 4, language => 'English' );
+is( $d->feast, 'St. Susan Calvin, doctor' );
