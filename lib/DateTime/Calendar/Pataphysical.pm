@@ -889,7 +889,7 @@ EOF
 
 # My own translations
 @feasts_en = @feasts;
-@feasts_en[232..289] = split /\n+/, <<EOF;
+@feasts_en[232..325] = split /\n+/, <<EOF;
 Holy Crocodiles, crocodiles
 Feast of the floodgates
 Holy Trolls, jumping-jacks
@@ -949,6 +949,44 @@ St. Barbecue, naiad
 Holy Long and Short, police officers
 St. Raca, hypocrite
 Defeat of the Boor
+
+St. Bouzine, spirit
+St. Lucullus, amateur (Bloomsday)
+St. Dondon, amazon
+St. Tripe, republican
+St. Ugolin the Meek
+St. God, retired
+St. Baby Toutout, evangelist
+St. Boudouille, bayadere
+St. Outre, psychiatrist
+St. Blutwurst, recteur
+Anointment of Talou VII, emperor of Ponukele
+St. Comfiture the devout et St. Cliche, donor
+Holy Instintestins, intimate councellors
+St. Colon, gunner
+St. Giborgne the venerable
+St. Inventory, poet
+St. Femelle, technician
+Visitation of Mother Ubu
+St. Sein, tautologist
+St. Perineum, zealot
+St. Speculum, confessor
+Feast of Gidouille
+St. Navel, gymnosophist
+St. Gray-gray, belly
+St. Bouffre, pontif
+St. Goulash, odalisque
+St. Gandouse, hygienist
+Pocket of Father Ubu
+Name of Ubu
+
+Feast of Father Ubu (Ubu of Summer)
+Commemoration of Father Ebe
+St. Scoundrel, purist et St. Fantomas, archangel
+Ascension of Mouchard, statistician, psychiatrist and policeman
+St. Villain, patrician
+St. Robot and St. Cornard, citizens
+St. Biribi, hotelier
 EOF
 
 1;
