@@ -1,5 +1,13 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
+0.04  2004-07-29 the "Transfiguration of Saint V. van Gogh" release
+    - added classification of holidays
+
+    - changed year count for years before the Pataphysical Era (1873):
+      there is no year 0 in the Pataphysical Calendar
+
+    - added t/pod.t
+
 0.03  2003-09-02  the "Saint Lazare (station)" release
     - move to the "Locale" system
 

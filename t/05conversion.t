@@ -1,7 +1,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 181;
+use Test::More tests => 186;
 use DateTime::Calendar::Pataphysical;
 
 SKIP:{
@@ -41,8 +41,9 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
               [ 1,  1,1003 => 2875,  9,  8 ],
               [ 1,  7,2002 => 3875,  2, 23 ],
               [ 1,  1,2003 => 3875,  9,  8 ],
-              [ 1,  7,-998 =>  875,  2, 23 ],
-              [ 1,  1,-997 =>  875,  9,  8 ], ) {
+              [ 1,  1,-1   => 1872,  9,  8 ],
+              [ 1,  7,-998 =>  876,  2, 24 ],
+              [ 1,  1,-997 =>  876,  9,  8 ], ) {
     my ($dp, $mp, $yp, $yg, $mg, $dg) = @$test;
 
     my $date = DateTime::Calendar::Pataphysical->new(
@@ -58,7 +59,7 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
     my $date_p = DateTime::Calendar::Pataphysical->from_object(
                 object => $date_g );
     isa_ok( $date_p, "DateTime::Calendar::Pataphysical", 'and back' );
-    is( $date_p->ymd, sprintf '%03d-%02d-%02d', $yp, $mp, $dp,
+    is( $date_p->ymd, sprintf '%0.3d-%0.2d-%0.2d', $yp, $mp, $dp,
         '... correctly' );
 }
 

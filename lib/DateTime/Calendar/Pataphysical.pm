@@ -4,9 +4,8 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
-#use DateTime 0.08;
 use DateTime::Duration;
 use DateTime::Locale;
 use Params::Validate qw/validate SCALAR OBJECT/;
@@ -108,6 +107,7 @@ sub locale { $_[0]->{locale} }
 sub is_leap_year {
     my $self = shift;
     my $year = $self->{year};
+    $year++ if $year < 0;
     if ($year % 4 != 3 or ($year % 100 == 27 and $year % 400 != 127)) {
         return 0;
     } else {
@@ -291,12 +291,13 @@ sub utc_rd_values {
     return if $self->is_imaginary;
 
     my ($year, $month, $day) = @{$self}{qw/year month day/};
+    $year++ if $year < 0;
 
     my $cyear = $year;
     $cyear++ if $month > 6;
     $day++ if $month > 11;
 
-    my $rd = 683984 +                   # 7 September 1873 = 28 Phalle 0
+    my $rd = 683984 +                   # 7 September 1873 = 28 Phalle '0'
              ($year-1) * 365 +          # normal years: 365 real days
              _floor( .25 * $cyear) -    # leap years
              _floor(($cyear+72)/100) +  # century years
@@ -377,6 +378,11 @@ sub _rd2ymd {
         $y ++;
     }
 
+    # There is no year 0
+    if ($y <= 0) {
+        $y--;
+    }
+
     return $y, $m, $d;
 }
 
@@ -433,6 +439,8 @@ sub add_duration {
 
     my %deltas = $dur->deltas;
 
+    $self->{year}++ if $self->{year} < 0;
+
     $self->{day} += $deltas{days} if $deltas{days};
     $self->{month} += $deltas{months} if $deltas{months};
 
@@ -444,13 +452,19 @@ sub add_duration {
         $self->{year} += _floor(($self->{month}-1)/13);
         $self->{month} %= 13;
     }
+
+    $self->{year}-- if $self->{year} <= 0;
+
     return $self;
 }
 
 sub subtract_datetime {
     my ($self, $dt) = @_;
 
-    my $days_diff = ($self->year  - $dt->year ) * 377 +
+    my ($syear, $dyear) = ($self->year, $dt->year);
+    $_ < 0 and $_++ for $syear, $dyear;
+
+    my $days_diff = ($syear       - $dyear    ) * 377 +
                     ($self->month - $dt->month) * 29 +
                     ($self->day   - $dt->day  );
     return DateTime::Duration->new( days => $days_diff );
@@ -486,401 +500,405 @@ sub compare
 my @feasts;
 
 sub feast {
-    return $feasts[ $_[0]->day_of_year_0 ];
+    return $feasts[ $_[0]->day_of_year_0 ][1];
+}
+
+sub type_of_feast {
+    return $feasts[ $_[0]->day_of_year_0 ][0];
 }
 
 # Feasts from
 # http://perso.wanadoo.fr/mexiqueculture/nouvelles6-latumba.htm
-@feasts = split /\n+/, <<EOF;
-Nativité d'Alfred Jarry
-St Ptyx, silentiaire (Abolition de)
-St Phénix, solipsiste et St Hyx, factotum
-St Lucien de Samosate, voyageur
-St Bardamu, voyageur
-Ste Vérola, assistante sociale
-St Alambic, abstracteur
-Absinthe, ci-devant St Alfred
-Descente du St Esprit (de Vin)
-Dilution
-Ste Purée, sportswoman
-Vide
-St Canterel, l'illuminateur
-St Sophrotatos l'Arménien, pataphysicien
-Éthernité
-St Ibicrate le Géomètre, pataphysicien
-Céphalorgie
-Flûtes de Pan
-Stes Grues, ophiophiles
-Ste Mélusine, souillarde de cuisine
-St Venceslas, duc
-Emmanuel Dieu
-Ste Varia-Miriam, amphibie
-Sts Rakirs et Rastrons, porte-côtelettes
-Nativité de Sa Magnificence Opach
-St Joseb, notaire à la mode de Bretagne
-Stes Gigolette et Gaufrette, dogaresses
-Xylostomie
-Le Jet Musical
+@feasts = map [/(.) (.+)/], split /\n+/, <<EOF;
+1 Nativité d'Alfred Jarry
+4 St Ptyx, silentiaire (Abolition de)
+4 St Phénix, solipsiste et St Hyx, factotum
+4 St Lucien de Samosate, voyageur
+4 St Bardamu, voyageur
+4 Ste Vérola, assistante sociale
+4 St Alambic, abstracteur
+3 Absinthe, ci-devant St Alfred
+4 Descente du St Esprit (de Vin)
+v Dilution
+4 Ste Purée, sportswoman
+v Vide
+4 St Canterel, l'illuminateur
+4 St Sophrotatos l'Arménien, pataphysicien
+3 Éthernité
+4 St Ibicrate le Géomètre, pataphysicien
+v Céphalorgie
+v Flûtes de Pan
+4 Stes Grues, ophiophiles
+4 Ste Mélusine, souillarde de cuisine
+4 St Venceslas, duc
+2 Emmanuel Dieu
+4 Ste Varia-Miriam, amphibie
+4 Sts Rakirs et Rastrons, porte-côtelettes
+4 Nativité de Sa Magnificence Opach
+4 St Joseb, notaire à la mode de Bretagne
+4 Stes Gigolette et Gaufrette, dogaresses
+v Xylostomie
+v Le Jet Musical
 
-L'Âge du Dr Faustroll
-Dissolution d'E. Poe, dinomythurge
-St Gibus, franc-maçon
-Ste Berthe de Courrière, égérie
-Ste Belgique, nourrice
-Ste Tourte, lyrique et Ste Bévue, sociologue
-St Prout, abbé
-Fête du Haha
-Tautologie
-St Panmuphle, huissier
-Sortie de St L. Cranach, apocalypticien
-St Cosinus, savant
-Bse Fenouillard, sainte famille
-Exhibition de la Daromphe
-Nativité de l'OEstre, artificier
-Ste Vadrouille, emblème
-St Homais d'Aquin, prudhomme
-Nativité de Sa Magnificence le baron Mollet (St Pipe)
-St Raphaël, apéritif et philistin
-Strangulation de Bosse-de-Nage
-Zimzoum de Bosse-de-Nage
-Résurrection de Bosse-de-Nage
-Chapeau de Bosse-de-Nage
-St Cl. Terrasse, musicien des Phynances
-St J.-P. Brisset, philologue, prince des penseurs
-Commémoration du Cure-dent
-Occultation d'Alfred Jarry
-Fuite d'Ablou
-Marée Terrestre
+2 L'Âge du Dr Faustroll
+4 Dissolution d'E. Poe, dinomythurge
+4 St Gibus, franc-maçon
+4 Ste Berthe de Courrière, égérie
+4 Ste Belgique, nourrice
+4 Ste Tourte, lyrique et Ste Bévue, sociologue
+4 St Prout, abbé
+2 Fête du Haha
+v Tautologie
+4 St Panmuphle, huissier
+4 Sortie de St L. Cranach, apocalypticien
+4 St Cosinus, savant
+4 Bse Fenouillard, sainte famille
+4 Exhibition de la Daromphe
+3 Nativité de l'OEstre, artificier
+4 Ste Vadrouille, emblème
+4 St Homais d'Aquin, prudhomme
+4 Nativité de Sa Magnificence le baron Mollet (St Pipe)
+4 St Raphaël, apéritif et philistin
+3 Strangulation de Bosse-de-Nage
+3 Zimzoum de Bosse-de-Nage
+2 Résurrection de Bosse-de-Nage
+3 Chapeau de Bosse-de-Nage
+4 St Cl. Terrasse, musicien des Phynances
+4 St J.-P. Brisset, philologue, prince des penseurs
+4 Commémoration du Cure-dent
+1 Occultation d'Alfred Jarry
+4 Fuite d'Ablou
+v Marée Terrestre
 
-Nativité de Pantagruel
-Ste Rrose Sélavy, héroïne
-Couronnement de Lord Patchogue, miroitier
-St Cravan, boxeur
-St Van Meegeren, faussaire
-St Omnibus, satyre
-St Cyrano de Bergerac, explorateur
-St Rimbe, oisif
-Équarrissage pour tous
-St Abstrait, bourreau
-St Ossian, barde postiche
-Dispute du Signe + et du Signe -
-Moustaches du Dr Faustroll
-St P. Bonnard, peintre des Phynances
-Navigation du Dr Faustroll
-St Cap, captain
-St Pangloss, humoriste passif
-St Chambernac, pauvriseur
-St Courtial des Péreires, aérostier et inventeur
-St Olibrius, augure
-St Possible, schizophrène
-St Lautréamont
-St Quincey, critique d'art
-St Berbiguier, martyr
-St Lewis Carroll, professeur
-St Mensonger, évêque
-Ste Visité, fille du précédent
-Nativité de St Swift, chanoine
-Traversée du Miroir
+3 Nativité de Pantagruel
+4 Ste Rrose Sélavy, héroïne
+4 Couronnement de Lord Patchogue, miroitier
+4 St Cravan, boxeur
+4 St Van Meegeren, faussaire
+4 St Omnibus, satyre
+4 St Cyrano de Bergerac, explorateur
+3 St Rimbe, oisif
+v Équarrissage pour tous
+4 St Abstrait, bourreau
+4 St Ossian, barde postiche
+3 Dispute du Signe + et du Signe -
+3 Moustaches du Dr Faustroll
+4 St P. Bonnard, peintre des Phynances
+1 Navigation du Dr Faustroll
+4 St Cap, captain
+4 St Pangloss, humoriste passif
+4 St Chambernac, pauvriseur
+4 St Courtial des Péreires, aérostier et inventeur
+4 St Olibrius, augure
+4 St Possible, schizophrène
+2 St Lautréamont
+4 St Quincey, critique d'art
+4 St Berbiguier, martyr
+4 St Lewis Carroll, professeur
+4 St Mensonger, évêque
+4 Ste Visité, fille du précédent
+4 Nativité de St Swift, chanoine
+v Traversée du Miroir
 
-Noces de Balkis et de Salomon
-St Doublemain, idéologue
-St Phlegmon, doctrinaire
-Ste Barbe (femme à), femme-canon
-Ste Savate, avocate
-St Navet et Ste Perruque, humanistes
-St Birbe, juge
-Conception du P. Ubu (A. J.)
-St Sagouin, homme d'état
-Exaltation d'Ubu Roi (Ubu d'hiver)
-Nativité de St Grabbe, scherziste
-Ste Choupe, mère de famille
-St Flaive, concierge
-Don Quichotte, champion du monde
-Khurmookum du Dr Faustroll
-St Nul, exempt
-St Moyen, français
-Ste Lurette, joconde
-Gravidité de Mère Ubu
-St Sabre, allopathe
-Ste Tape, pompette
-César - Antechrist
-Ste Viole, vierge et martyre
-Ste Pochetée, gouvernante
-Nativité de l'Archéoptéryx
-Monsieur Sisyphe
-St Tic, conjoint
-St Cervelas, penseur
-Aleph
+3 Noces de Balkis et de Salomon
+4 St Doublemain, idéologue
+4 St Phlegmon, doctrinaire
+4 Ste Barbe (femme à), femme-canon
+4 Ste Savate, avocate
+4 St Navet et Ste Perruque, humanistes
+4 St Birbe, juge
+2 Conception du P. Ubu (A. J.)
+4 St Sagouin, homme d'état
+1 Exaltation d'Ubu Roi (Ubu d'hiver)
+4 Nativité de St Grabbe, scherziste
+4 Ste Choupe, mère de famille
+4 St Flaive, concierge
+4 Don Quichotte, champion du monde
+2 Khurmookum du Dr Faustroll
+4 St Nul, exempt
+4 St Moyen, français
+4 Ste Lurette, joconde
+3 Gravidité de Mère Ubu
+4 St Sabre, allopathe
+4 Ste Tape, pompette
+1 César - Antechrist
+4 Ste Viole, vierge et martyre
+4 Ste Pochetée, gouvernante
+3 Nativité de l'Archéoptéryx
+4 Monsieur Sisyphe
+4 St Tic, conjoint
+4 St Cervelas, penseur
+v Aleph
 
-St Alaodine, virtuose
-Sts Hassassins, praticiens
-Astu
-Décervelage
-Sts Giron, Pile et Cotice, palotins
-Sts Polonais, prolétaires
-Sts Forçats, poliorcètes
-St Bordure, capitaine
-Dormition de Jacques Vaché, interprète
-Drapaud (érection du)
-St Eustache, libérateur
-St Landru, gynécologue
-St Guillotin, médecin
-Sts 4 Sans-Cou, enchanteurs
-Conscience d'Ubu
-St Mauvais, sujet
-St Mandrin, poète et philosophe
-Sts Pirates et Flibustiers, thaumaturges
-St et Ste Cartouche, vétérinaires
-St Outlaw, aristocrate
-Chaire du Dr FaustrolL
-Ostention du Bâton à Physique
-St Tank, animal
-St Weidman, patriarche
-St Petiot, expert
-Escrime
-Sts Chemins de fer, assassins
-Repopulation
-Lit de Procruste
+3 St Alaodine, virtuose
+4 Sts Hassassins, praticiens
+4 Astu
+1 Décervelage
+4 Sts Giron, Pile et Cotice, palotins
+4 Sts Polonais, prolétaires
+4 Sts Forçats, poliorcètes
+3 St Bordure, capitaine
+4 Dormition de Jacques Vaché, interprète
+v Drapaud (érection du)
+4 St Eustache, libérateur
+4 St Landru, gynécologue
+4 St Guillotin, médecin
+4 Sts 4 Sans-Cou, enchanteurs
+3 Conscience d'Ubu
+4 St Mauvais, sujet
+4 St Mandrin, poète et philosophe
+4 Sts Pirates et Flibustiers, thaumaturges
+4 St et Ste Cartouche, vétérinaires
+4 St Outlaw, aristocrate
+1 Chaire du Dr FaustrolL
+2 Ostention du Bâton à Physique
+4 St Tank, animal
+4 St Weidman, patriarche
+4 St Petiot, expert
+v Escrime
+4 Sts Chemins de fer, assassins
+v Repopulation
+v Lit de Procruste
 
-Dépucelage de Mère Ubu
-St Sigisbée, eunuque
-St Anthropoïde, policier
-Ste Goule ou Gudule, institutrice
-Ste Gale, abbesse
-Ste Touche, postulante
-St Gueule, abbé
-Fête de la Chandelle Verte
-Ste Crêpe, laïque
-St Préservatif, bedeau
-St Baobab, célibataire
-St Membre, compilateur
-Copulation
-Nativité de St J. Verne, globe-trotter en chambre
-Alice au Pays des Merveilles
-St Münchhausen, baron
-Le Bétrou, théurge
-Nativité de St Deibler, prestidigitateur
-St Sade ès liens
-St Lafleur, valet
-Lavement
-St Sexe, stylite
-Occultation de St J. Torma, euphoriste
-Conversion de St Matorel, bateleur
-Ste Marmelade, inspirée
-L'Amour Absolu, deliquium
-Ste Tabagie, cosmogène
-Sts Hylactor et Pamphagus
-Mouvement Perpétuel
+3 Dépucelage de Mère Ubu
+4 St Sigisbée, eunuque
+4 St Anthropoïde, policier
+4 Ste Goule ou Gudule, institutrice
+4 Ste Gale, abbesse
+4 Ste Touche, postulante
+4 St Gueule, abbé
+3 Fête de la Chandelle Verte
+4 Ste Crêpe, laïque
+4 St Préservatif, bedeau
+4 St Baobab, célibataire
+4 St Membre, compilateur
+v Copulation
+4 Nativité de St J. Verne, globe-trotter en chambre
+v Alice au Pays des Merveilles
+4 St Münchhausen, baron
+4 Le Bétrou, théurge
+4 Nativité de St Deibler, prestidigitateur
+4 St Sade ès liens
+4 St Lafleur, valet
+v Lavement
+2 St Sexe, stylite
+4 Occultation de St J. Torma, euphoriste
+4 Conversion de St Matorel, bateleur
+4 Ste Marmelade, inspirée
+3 L'Amour Absolu, deliquium
+4 Ste Tabagie, cosmogène
+4 Sts Hylactor et Pamphagus
+v Mouvement Perpétuel
 
-Érection du Surmâle
-St André Marcueil, ascète cycliste
-St Ellen, hile
-St Michet, idéaliste
-St Ouducul, trouvère
-Vers Belges
-St Gavroche, forain
-La Machine à Inspirer l'Amour
-St Remezy, évêque in partibus
-Nativité de St Tancrède, jeune homme
-Testament de P. Uccello, le mal illuminé
-St Hari Seldon, psychohistorien galactique
-Ste Valburge, succube
-Sabbat
-Sts Adelphes, ésotéristes
-Sts Templiers, adeptes
-St Dricarpe, prosélyte
-St Nosocome, carabin
-Ste Goutte, fête militaire
-Ste Cuisse, dame patronnesse
-St Inscrit, Converti
-St Sengle, déserteur
-St Masquarade, uniforme
-Nativité de St Stéphane, faune
-St Poligraf Poligrafovitch, chien
-St Pâle, mineur
-St Valens, frère onirique
-Dédicace du Tripode
-Bse Escampette, dynamiteuse
+3 Érection du Surmâle
+4 St André Marcueil, ascète cycliste
+4 St Ellen, hile
+4 St Michet, idéaliste
+4 St Ouducul, trouvère
+4 Vers Belges
+4 St Gavroche, forain
+3 La Machine à Inspirer l'Amour
+4 St Remezy, évêque in partibus
+4 Nativité de St Tancrède, jeune homme
+4 Testament de P. Uccello, le mal illuminé
+4 St Hari Seldon, psychohistorien galactique
+4 Ste Valburge, succube
+v Sabbat
+3 Sts Adelphes, ésotéristes
+4 Sts Templiers, adeptes
+4 St Dricarpe, prosélyte
+4 St Nosocome, carabin
+4 Ste Goutte, fête militaire
+4 Ste Cuisse, dame patronnesse
+4 St Inscrit, Converti
+2 St Sengle, déserteur
+4 St Masquarade, uniforme
+4 Nativité de St Stéphane, faune
+4 St Poligraf Poligrafovitch, chien
+4 St Pâle, mineur
+3 St Valens, frère onirique
+v Dédicace du Tripode
+4 Bse Escampette, dynamiteuse
 
-St Ablou, page et St Haldern, duc
-Sts Hiboux, maîtres-chanteurs
-La Mandragore, solanée androïde
-St Pagne, confident
-Sts Aster et Vulpian, violateurs du Néant
-St Ganymède, professionnel
-La Main de Gloire
-La Machine à Peindre
-Ste Trique, lunatique
-Rémission des Poissons
-St Maquereau, intercesseur
-St Georges Dazet, poulpe au regard de soie
-Nativité de Maldoror, corsaire aux cheveux d'or
-Sortie d'A. Dürer, hermétiste
-Invention de la 'Pataphysique
-Exit St Domenico Theotocopouli, el Greco
-St Hiéronymus Bosch, démonarque
-Les 27 Êtres Issus des Livres Pairs
-St Barbeau, procureur et Ste Morue, juste
-Capture du Fourneau
-St Docteur Moreau, insulaire
-Fête des Polyèdres
-Locus Solus
-St Tupetu de Tupetu, organisateur de loteries
-Exit St Goya, alchimiste
-St Escargot, sybarite
-Ste Hure de Chasteté, pénitente
-St Turgescent, iconoclaste
-Cymbalum Mundi
+3 St Ablou, page et St Haldern, duc
+4 Sts Hiboux, maîtres-chanteurs
+4 La Mandragore, solanée androïde
+4 St Pagne, confident
+4 Sts Aster et Vulpian, violateurs du Néant
+4 St Ganymède, professionnel
+v La Main de Gloire
+3 La Machine à Peindre
+4 Ste Trique, lunatique
+4 Rémission des Poissons
+4 St Maquereau, intercesseur
+4 St Georges Dazet, poulpe au regard de soie
+4 Nativité de Maldoror, corsaire aux cheveux d'or
+4 Sortie d'A. Dürer, hermétiste
+* Invention de la 'Pataphysique
+4 Exit St Domenico Theotocopouli, el Greco
+4 St Hiéronymus Bosch, démonarque
+v Les 27 Êtres Issus des Livres Pairs
+4 St Barbeau, procureur et Ste Morue, juste
+v Capture du Fourneau
+4 St Docteur Moreau, insulaire
+2 Fête des Polyèdres
+v Locus Solus
+4 St Tupetu de Tupetu, organisateur de loteries
+4 Exit St Goya, alchimiste
+4 St Escargot, sybarite
+4 Ste Hure de Chasteté, pénitente
+4 St Turgescent, iconoclaste
+v Cymbalum Mundi
 
-Sts Crocodiles, crocodiles
-Fête des écluses
-Sts Trolls, pantins
-Ste Susan Calvin, docteur
-Ste Poignée, veuve et Ste Jutte, recluse
-Ste Oneille, gourgandine
-St Fénéon ès Liens
-St Bougrelas, prince
-Sts Boleslas et Ladislas, polonais
-St Forficule, Barnabite
-Explosion du Palotin
-Réprobation du Travail
-Esquive de St Léonard (de Vinci), illusionniste
-St Équivoque, sans-culotte
-Adoration du Pal
-Déploration de St Achras, éleveur de Polyèdres
-St Macrotatoure, caudataire
-Canotage
-Occultation de St Gauguin, océanide
-St Ti Belot, séide
-Occultation de Sa Magnificence le Dr Sandomir
-Sts Palotins des Phynances
-Sts Quatrezoneilles, Herdanpo, Mousched-Gogh, palotins
-Ste Lumelle, écuyère
-Sts Potassons, acolythes
-Ste Prétentaine, rosière
-St Foin, coryphée
-Nativité de St Satie, Grand Parcier de l'Église d'Art
-Erratum
+3 Sts Crocodiles, crocodiles
+4 Fête des écluses
+4 Sts Trolls, pantins
+4 Ste Susan Calvin, docteur
+4 Ste Poignée, veuve et Ste Jutte, recluse
+4 Ste Oneille, gourgandine
+4 St Fénéon ès Liens
+3 St Bougrelas, prince
+4 Sts Boleslas et Ladislas, polonais
+4 St Forficule, Barnabite
+v Explosion du Palotin
+v Réprobation du Travail
+4 Esquive de St Léonard (de Vinci), illusionniste
+4 St Équivoque, sans-culotte
+3 Adoration du Pal
+4 Déploration de St Achras, éleveur de Polyèdres
+4 St Macrotatoure, caudataire
+v Canotage
+4 Occultation de St Gauguin, océanide
+4 St Ti Belot, séide
+4 Occultation de Sa Magnificence le Dr Sandomir
+2 Sts Palotins des Phynances
+4 Sts Quatrezoneilles, Herdanpo, Mousched-Gogh, palotins
+4 Ste Lumelle, écuyère
+4 Sts Potassons, acolythes
+4 Ste Prétentaine, rosière
+4 St Foin, coryphée
+4 Nativité de St Satie, Grand Parcier de l'Église d'Art
+v Erratum
 
-Accouchement de Ste Jeanne, papesse
-Le Moutardier du Pape
-St Siège, sous-pape
-Nativité de St H. Rousseau, douanier
-St Crouducul, troupier
-St Cucufat, mécène
-Nativité de M. Plume, propriétaire
-Cocuage de M. le P. Ubu
-Vidange
-St Barbapoux, amant
-St Memnon, vidangeur
-Stes Miches, catéchumènes
-Ste Lunette, solitaire
-St Sphincter, profès
-Sts Serpents d'Airain
-Nativité de St Donatien A. François
-St Woland, professeur
-St Anal, cordelier et Ste Foire, anagogue
-Ste Fétatoire, super
-Ste Colombine, expurgée
-Ste Pyrotechnie, illuminée
-Ontogénie Pataphysique
-Interprétation de L'Umour
-Ste Purge, sage-femme
-Apparition D'Ubu Roi
-Ste Barbaque, naïade
-Sts Courts et Longs, gendarmes
-St Raca, cagot
-Défaite du Mufle
+3 Accouchement de Ste Jeanne, papesse
+v Le Moutardier du Pape
+4 St Siège, sous-pape
+4 Nativité de St H. Rousseau, douanier
+4 St Crouducul, troupier
+4 St Cucufat, mécène
+4 Nativité de M. Plume, propriétaire
+2 Cocuage de M. le P. Ubu
+v Vidange
+4 St Barbapoux, amant
+4 St Memnon, vidangeur
+4 Stes Miches, catéchumènes
+4 Ste Lunette, solitaire
+4 St Sphincter, profès
+3 Sts Serpents d'Airain
+4 Nativité de St Donatien A. François
+4 St Woland, professeur
+4 St Anal, cordelier et Ste Foire, anagogue
+4 Ste Fétatoire, super
+4 Ste Colombine, expurgée
+4 Ste Pyrotechnie, illuminée
+* Ontogénie Pataphysique
+3 Interprétation de L'Umour
+4 Ste Purge, sage-femme
+2 Apparition D'Ubu Roi
+4 Ste Barbaque, naïade
+4 Sts Courts et Longs, gendarmes
+4 St Raca, cagot
+v Défaite du Mufle
 
-Ste Bouzine, esprit
-St Lucullus, amateur (Bloomsday)
-Ste Dondon, amazone
-Ste Tripe, républicaine
-St Ugolin, mansuet
-St Dieu, retraité
-St Bébé Toutout, évangéliste
-Ste Boudouille, bayadère
-Ste Outre, psychiatre
-St Boudin, recteur
-Sacre de Talou VII, empereur du Ponukélé
-Ste Confiture, dévote et Ste Cliche, donatrice
-Sts Instintestins, conseillers intimes
-St Colon, artilleur
-Ste Giborgne, vénérable
-St Inventaire, poète
-Ste Femelle, technicienne
-Visitation de Mère Ubu
-St Sein, tautologue
-St Périnée, zélateur
-St Spéculum, confesseur
-Fête de Gidouille
-St Ombilic, gymnosophiste
-St Gris-gris, ventre
-St Bouffre, pontife
-Ste Goulache, odalisque
-Ste Gandouse, hygiéniste
-Poche du Père Ubu
-Nom d'Ubu
+3 Ste Bouzine, esprit
+4 St Lucullus, amateur (Bloomsday)
+4 Ste Dondon, amazone
+4 Ste Tripe, républicaine
+4 St Ugolin, mansuet
+4 St Dieu, retraité
+4 St Bébé Toutout, évangéliste
+3 Ste Boudouille, bayadère
+4 Ste Outre, psychiatre
+4 St Boudin, recteur
+4 Sacre de Talou VII, empereur du Ponukélé
+4 Ste Confiture, dévote et Ste Cliche, donatrice
+4 Sts Instintestins, conseillers intimes
+4 St Colon, artilleur
+3 Ste Giborgne, vénérable
+4 St Inventaire, poète
+4 Ste Femelle, technicienne
+2 Visitation de Mère Ubu
+4 St Sein, tautologue
+4 St Périnée, zélateur
+4 St Spéculum, confesseur
+2 Fête de Gidouille
+4 St Ombilic, gymnosophiste
+4 St Gris-gris, ventre
+4 St Bouffre, pontife
+4 Ste Goulache, odalisque
+4 Ste Gandouse, hygiéniste
+v Poche du Père Ubu
+2 Nom d'Ubu
 
-Fête du P. Ubu (Ubu d'été)
-Commémoration du P. Ébé
-Ste Crapule, puriste et St Fantomas, archange
-Ascension du Mouchard, statisticien, psychiatre et policier
-St Arsouille, patricien
-Sts Robot et Cornard, citoyens
-St Biribi, taulier
-Susception du Croc à Merdre
-Sts Écrase-Merdre, sectateurs
-Sts Pieds Nickelés, trinité
-Stes Canicule et Canule, jouvencelles
-Sts Cannibales, philanthropes
-St Dada, prophète
-Ste Anne, pèlerine, énergumène
-Procession aux Phynances
-Transfiguration de St V. van Gogh, transmutateur
-Ste Flamberge, voyante
-St Trou, chauffeur
-Ste Taloche, matrone
-St Tiberge, frère quêteur
-Sts Catoblepas, lord et Anoblepas, amiral
-Ubu ès Liens
-St Pissembock, oncle
-St Pissedoux, caporal des hommes libres
-St Panurge, moraliste
-St Glé, neurologue-aliéniste
-St Pistolet à Merdre, jubilaire
-Nativité de St Bruggle
-Le soleil solide froid
+1 Fête du P. Ubu (Ubu d'été)
+4 Commémoration du P. Ébé
+4 Ste Crapule, puriste et St Fantomas, archange
+4 Ascension du Mouchard, statisticien, psychiatre et policier
+4 St Arsouille, patricien
+4 Sts Robot et Cornard, citoyens
+4 St Biribi, taulier
+2 Susception du Croc à Merdre
+4 Sts Écrase-Merdre, sectateurs
+4 Sts Pieds Nickelés, trinité
+4 Stes Canicule et Canule, jouvencelles
+4 Sts Cannibales, philanthropes
+4 St Dada, prophète
+4 Ste Anne, pèlerine, énergumène
+2 Procession aux Phynances
+4 Transfiguration de St V. van Gogh, transmutateur
+4 Ste Flamberge, voyante
+4 St Trou, chauffeur
+4 Ste Taloche, matrone
+4 St Tiberge, frère quêteur
+4 Sts Catoblepas, lord et Anoblepas, amiral
+2 Ubu ès Liens
+4 St Pissembock, oncle
+4 St Pissedoux, caporal des hommes libres
+4 St Panurge, moraliste
+4 St Glé, neurologue-aliéniste
+4 St Pistolet à Merdre, jubilaire
+4 Nativité de St Bruggle
+v Le soleil solide froid
 
-St Chibre, planton
-Ste Ruth, zélatrice
-St Zebb, passe-partout
-St Mnester, confesseur
-Assomption de Ste Messaline
-Penis Angelicus
-St Patrobas, pompier
-Ste Léda, ajusteuse
-St Godemiché, économe
-Ste Nitouche, orante
-Ste Lèchefrite, botteuse
-Ste Andouille, amphibologue
-Ste Bitre, ouvreuse et St Étalon, couvreur
-Bataille de Morsang
-Mort de Dionysos, surhomme
-Nativité de St Vibescu, pohète et Commémoration de Ste Cuculine d'Ancône
-Ste Gallinacée, cocotte
-St Lingam, bouche-trou
-St Prélote, capucin
-St Pie VIII, navigant
-St Erbrand, polytechnicien
-Ste Dragonne, pyrophage
-St Lazare, gare
-Ste Orchidée, aumonière
-Nativité apparente d'Artaud le Momo
-Disparition de l'Ancien Breughel, incendiaire
-St Priape, franc-tireur
-Transfixion de Ste Messaline
-Le Termès
+3 St Chibre, planton
+4 Ste Ruth, zélatrice
+4 St Zebb, passe-partout
+4 St Mnester, confesseur
+2 Assomption de Ste Messaline
+v Penis Angelicus
+4 St Patrobas, pompier
+3 Ste Léda, ajusteuse
+4 St Godemiché, économe
+4 Ste Nitouche, orante
+4 Ste Lèchefrite, botteuse
+4 Ste Andouille, amphibologue
+4 Ste Bitre, ouvreuse et St Étalon, couvreur
+3 Bataille de Morsang
+3 Mort de Dionysos, surhomme
+4 Nativité de St Vibescu, pohète et Commémoration de Ste Cuculine d'Ancône
+4 Ste Gallinacée, cocotte
+4 St Lingam, bouche-trou
+4 St Prélote, capucin
+4 St Pie VIII, navigant
+3 St Erbrand, polytechnicien
+2 Ste Dragonne, pyrophage
+4 St Lazare, gare
+4 Ste Orchidée, aumonière
+4 Nativité apparente d'Artaud le Momo
+4 Disparition de l'Ancien Breughel, incendiaire
+4 St Priape, franc-tireur
+3 Transfixion de Ste Messaline
+v Le Termès
 EOF
 
 1;
@@ -1075,6 +1093,17 @@ additional specifier: C<%*> represents the feast of that date.
 
 Returns the feast or vacuation of the given date.
 
+=item * type_of_feast
+
+Returns the type of feast or vacuation.
+
+  '*' means Fête Suprème Première première
+  '1' means Fête Suprème Première seconde
+  '2' means Fête Suprème Seconde
+  '3' means Fête Suprème Tierce
+  '4' means Fête Suprème Quarte
+  'v' means Vacuation
+
 =item * is_imaginary
 
 Returns true or false indicating whether the datetime object represents an
@@ -1160,9 +1189,9 @@ Eugene van der Pijll <pijll@gmx.net>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003 Eugene van der Pijll.  All rights reserved.  This
-program is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
+Copyright (c) 2003, 2004 Eugene van der Pijll.  All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
