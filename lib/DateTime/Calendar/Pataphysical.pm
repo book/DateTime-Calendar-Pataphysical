@@ -54,6 +54,7 @@ sub new {
                         month => {type => SCALAR, default => 1},
                         day   => {type => SCALAR, default => 1},
                         rd_secs   => { type => SCALAR, default => 0},
+                        rd_nano   => { type => SCALAR, default => 0},
                         language  => { type => SCALAR | OBJECT,
                                        default => $class->DefaultLanguage },
                       } );
@@ -302,15 +303,15 @@ sub utc_rd_values {
              _floor(($cyear+72)/100) +  # century years
              _floor(($cyear+272)/400 ) +
              + ($month - 1) * 28 + $day;
-    return ($rd, $self->{rd_secs});
+    return ($rd, $self->{rd_secs}, $self->{rd_nano});
 }
 
 sub utc_rd_as_seconds {
     my $self = shift;
-    my ($rd_days, $rd_secs) = $self->utc_rd_values;
+    my ($rd_days, $rd_secs, $rd_nano) = $self->utc_rd_values;
 
     if (defined $rd_days) {
-        return $rd_days*24*60*60 + $rd_secs;
+        return $rd_days*24*60*60 + $rd_secs + $rd_nano * 1e-9;
     } else {
         return undef;
     }
@@ -330,12 +331,13 @@ sub from_object {
     $p{object} = $p{object}->clone->set_time_zone( 'floating' )
                                 if $p{object}->can( 'set_time_zone' );
 
-    my ( $rd_days, $rd_secs ) = $p{object}->utc_rd_values;
+    my ( $rd_days, $rd_secs, $rd_nano ) = $p{object}->utc_rd_values;
 
     my ($y, $m, $d) = $class->_rd2ymd( $rd_days );
 
     return $class->new( year => $y, month => $m, day => $d,
-                        rd_secs => $rd_secs, language => $p{language} );
+                        rd_secs => $rd_secs||0, rd_nano => $rd_nano||0,
+                        language => $p{language} );
 }
 
 sub _rd2ymd {
@@ -889,12 +891,72 @@ EOF
 
 # My own translations
 @feasts_en = @feasts;
-@feasts_en[232..325] = split /\n+/, <<EOF;
+@feasts_en[174..325] = split /\n+/, <<EOF;
+Erection of Surmale
+St. André Marcueil, ascetic cyclist
+St. Ellen, hilum
+St. Michet, idealist
+St. Ouducul, trouveur
+To Belgians
+St. Street Urchin, showman
+The Machine to Inspire Love
+St. Remezy, bishop in partibus
+Nativity of St. Tancrede, young man
+Testament of P. Uccello, evil illuminated
+St. Hari Seldon, galactic psychohistorian
+St. Valburge, succubus
+Sabbath
+Holy Adelphes, esoterists
+Holy Templars, adepts
+St. Dricarpe, proselyte
+St Nosocome, medical student
+St. Drop, military festival
+St. Thigh, patroness
+St. Registered, convert
+St. Sengle, deserter
+St. Masquerade, uniform
+Nativity of St Stephan, faun
+St. Poligraf Poligrafovitch, dog
+St. Pale, minor
+St. Valens, dream brother
+Dedication of the Tripod
+Baroness Skedaddle, dynamiter
+
+St. Ablou, page, and St. Haldern, duke
+Holy Owls, master singers
+The Mandrake, human-like nightshade
+St. Loincloth, confidant
+St. Aster and St. Vulpian, violators of the Nothingness
+St. Ganymede, professional
+The Hand of Glory
+The Painting Machine
+St. Cudgel, lunatic
+Remission of the Fishes
+St. Mackerel, intercessor
+St. Georges Dazet, squid in regard of silk
+Nativity of Maldoror, golden-haired corsair
+Exit of A. Dürer, hermetist
+Invention of Pataphysics
+Exit St. Domenico Theotocopouli, el Greco
+St. Hieronymus Bosch, demonarch
+The 27 Existences Resulting from the Even Books
+St. Barbel, procurer, and St. Cod the just
+Capture of the Furnace
+St. Doctor Moreau, islander
+Feast of the Polyhedrons
+Locus Solus
+St. Tupetu of Tupetu, organizer of lotteries
+Exit St. Goya, alchemist
+St. Escargot, sybarite
+St. Head of Chastity, penitent
+St. Turgescent, iconoclast
+Cymbalum Mundi
+
 Holy Crocodiles, crocodiles
 Feast of the floodgates
 Holy Trolls, jumping-jacks
 St. Susan Calvin, doctor
-St. Handful, widow and St. Jutte, recluse
+St. Handful, widow, and St. Jutte, recluse
 St. Oneille, trollop
 St. Fénéon in Bonds
 St. Bougrelas, prince
@@ -924,8 +986,8 @@ Delivery of St. Joan, papess
 The Mustarder of the Pope
 St. Seat, underpope
 Nativity of St. H. Rousseau, customs officer
-St Crouducul, trooper
-St Cucufat, maecenas
+St. Crouducul, trooper
+St. Cucufat, maecenas
 Nativity of Mr. Plume, proprietor
 Cuckoldry of Father Ubu
 Emptying
@@ -933,11 +995,11 @@ St. Barbapoux, lover
 St. Memnon, dunnikin diver
 Holy Miches, catechumens
 St. Lunette, hermitess
-St Sphincter, professed monk
+St. Sphincter, professed monk
 Holy Serpents of Bronze
 Nativity of St. Donatien A. François
 St. Woland, professor
-St. Anal, cordelier and St. Trots, anagogic
+St. Anal, cordelier, and St. Trots, anagogic
 St. Fétatoire, super
 St. Colombine, expurged
 St. Pyrotechnics, illuminated
@@ -946,7 +1008,7 @@ Interpretation of Umour
 St. Purge, midwife
 Apparition of King Ubu
 St. Barbecue, naiad
-Holy Long and Short, police officers
+St. Long and St. Short, police officers
 St. Raca, hypocrite
 Defeat of the Boor
 

@@ -1,8 +1,8 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
 0.03  2003-??
-    - store rd_seconds in the object in from_object; return this value
-      if object is converted back to another calendar
+    - store rd_seconds and rd_nanoseconds in the object in from_object;
+      return this value if object is converted back to another calendar
 
 0.02  2003-04-04  the "Nativity of Maldoror" release
     - corrected utc_rd_as_seconds()
