@@ -1,7 +1,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 139;
+use Test::More tests => 180;
 use DateTime::Calendar::Pataphysical;
 
 SKIP:{
@@ -49,9 +49,11 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
                     year => $yp, month => $mp, day => $dp );
     my $date_g = DateTime->from_object( object => $date );
 
-    isa_ok( $date_g, 'DateTime', 'converted '. $date->datetime );
+    isa_ok( $date_g, 'DateTime', 'converted date'. $date->datetime );
     is( $date_g->ymd, sprintf '%04d-%02d-%02d', $yg, $mg, $dg,
             '... correctly' );
+    is( $date->utc_rd_as_seconds, $date_g->utc_rd_as_seconds,
+        'utc_rd_as_seconds is equal' );
 
     my $date_p = DateTime::Calendar::Pataphysical->from_object(
                 object => $date_g );
@@ -59,6 +61,16 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
     is( $date_p->ymd, sprintf '%03d-%02d-%02d', $yp, $mp, $dp,
         '... correctly' );
 }
+
+my $d = DateTime->new( year => 2000, month => 2, day => 24,
+                       time_zone => 'Europe/Amsterdam' );
+my $dp = DateTime::Calendar::Pataphysical->from_object( object => $d );
+
+is( $dp->ymd, '127-07-01', 'convert from local time instead of utc' );
+
+#my $d2 = DateTime->from_object( object => $dp );
+#is( $d2->offset, +3600, 'conversion keeps timezone intact' );
+#is( $d2->datetime, '2000-02-24T00:00:00', '... and the correct time' );
 } # end SKIP
 
 #                yyy  mm  dd
@@ -74,4 +86,5 @@ for my $test ( [   1,  1, 29 ],
                     year => $y, month => $m, day => $d );
     my @rd = $date->utc_rd_values;
     is( @rd, 0, "$y-$m-$d (imaginary)" );
+    ok( !defined $date->utc_rd_as_seconds, 'utc_rd_as_seconds not defined' );
 }

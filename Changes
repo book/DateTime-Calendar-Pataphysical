@@ -1,4 +1,12 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
-0.01  2003-03-29  the "Hand of Glory release"
+0.02  2003-04-04  the "Nativity of Maldoror" release
+    - corrected utc_rd_as_seconds()
+
+    - added language parameter to from_epoch, from_object,
+      last_day_of_month
+
+    - corrected from_object to remove time zone problems
+
+0.01  2003-03-29  the "Hand of Glory" release
 	- original version

@@ -3,7 +3,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 39;
+use Test::More tests => 41;
 use DateTime::Calendar::Pataphysical;
 
 #########################
@@ -92,3 +92,5 @@ year => 124, month => 6, day => 29
 %y	24
 %Y	124
 %*	Mouvement Perpétuel
+%z	z
+%-	%-

@@ -4,7 +4,7 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 #use DateTime 0.08;
 use DateTime::Duration;
@@ -304,7 +304,16 @@ sub utc_rd_values {
     return ($rd, 0);
 }
 
-sub utc_rd_as_seconds { $_[0]->{utc_rd_days} * 86400 }
+sub utc_rd_as_seconds {
+    my $self = shift;
+    my ($rd_days, $rd_secs) = $self->utc_rd_values;
+
+    if (defined $rd_days) {
+        return $rd_days*24*60*60 + $rd_secs;
+    } else {
+        return undef;
+    }
+}
 
 sub from_object {
     my $class = shift;
@@ -312,15 +321,20 @@ sub from_object {
                       { object => { type => OBJECT,
                                     can => 'utc_rd_values',
                                   },
-                        language  => { type => SCALAR | OBJECT, optional => 1 },
+                        language => { type => SCALAR | OBJECT,
+                                      default => $class->DefaultLanguage },
                       },
                        );
+
+    $p{object} = $p{object}->clone->set_time_zone( 'floating' )
+                                if $p{object}->can( 'set_time_zone' );
 
     my ( $rd_days, $rd_secs ) = $p{object}->utc_rd_values;
 
     my ($y, $m, $d) = $class->_rd2ymd( $rd_days );
 
-    return $class->new( year => $y, month => $m, day => $d );
+    return $class->new( year => $y, month => $m, day => $d,
+                        language => $p{language} );
 }
 
 sub _rd2ymd {
@@ -364,12 +378,12 @@ sub _rd2ymd {
     return $y, $m, $d;
 }
 
-sub from_epoch
-{
+sub from_epoch {
     my $class = shift;
     my %p = validate( @_,
                       { epoch => { type => SCALAR },
-#                        language => { type => SCALAR | OBJECT, optional => 1 },
+                        language => { type => SCALAR | OBJECT,
+                                      default => $class->DefaultLanguage },
                       }
                     );
 
@@ -377,7 +391,8 @@ sub from_epoch
     
     my ($y, $m, $d) = $class->_rd2ymd( $rd );
 
-    return $class->new( year => $y, month => $m, day => $d );
+    return $class->new( year => $y, month => $m, day => $d,
+                        language => $p{language} );
 }
 
 sub now { shift->from_epoch( epoch => (scalar time), @_ ) }

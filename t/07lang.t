@@ -1,7 +1,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 9;
+use Test::More tests => 13;
 use DateTime::Calendar::Pataphysical;
 
 #########################
@@ -32,3 +32,22 @@ is( $d->day_name, 'hunyadi', 'Dutch name hunyadi' );
 
 $d->set( language => 'English' );
 is( $d->day_name, 'Hunyadi', 'English name Hunyadi' );
+
+$d = DateTime::Calendar::Pataphysical->from_epoch( epoch => 0,
+                                                   language => 'English' );
+isa_ok( $d->language, 'DateTime::Language::English',
+        'from_epoch() accepts language' );
+
+$d = DateTime::Calendar::Pataphysical->now( language => 'Dutch' );
+isa_ok( $d->language, 'DateTime::Language::Dutch',
+        'now() accepts language' );
+
+$d = DateTime::Calendar::Pataphysical->from_object( object => $d,
+                                                    language => 'English' );
+isa_ok( $d->language, 'DateTime::Language::English',
+        'from_object() accepts language' );
+
+$d = DateTime::Calendar::Pataphysical->last_day_of_month(
+            year => 130, month => 1, language => 'Dutch' );
+isa_ok( $d->language, 'DateTime::Language::Dutch',
+        'last_day_of_month() accepts language' );
