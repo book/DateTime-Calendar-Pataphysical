@@ -4,11 +4,10 @@ use strict;
 
 use vars qw($VERSION);
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
-#use DateTime 0.08;
 use DateTime::Duration;
-use DateTime::Language;
+use DateTime::Locale;
 use Params::Validate qw/validate SCALAR OBJECT/;
 
 sub _floor {
@@ -28,24 +27,23 @@ use overload ( 'fallback' => 1,
                '+' => '_add_overload',
              );
 
-# Copied from DateTime.pm
 {
-    my $DefaultLanguage;
-    sub DefaultLanguage {
+    my $DefaultLocale;
+    sub DefaultLocale {
         my $class = shift;
 
         if (@_) {
             my $lang = shift;
 
-            DateTime::Language->load($lang);
+            DateTime::Locale->load($lang);
 
-            $DefaultLanguage = $lang;
+            $DefaultLocale = $lang;
         }
 
-        return $DefaultLanguage;
+        return $DefaultLocale;
     }
 }
-__PACKAGE__->DefaultLanguage('French');
+__PACKAGE__->DefaultLocale('French');
 
 sub new {
     my $class = shift;
@@ -55,13 +53,13 @@ sub new {
                         day   => {type => SCALAR, default => 1},
                         rd_secs   => { type => SCALAR, default => 0},
                         rd_nano   => { type => SCALAR, default => 0},
-                        language  => { type => SCALAR | OBJECT,
-                                       default => $class->DefaultLanguage },
+                        locale  => { type => SCALAR | OBJECT,
+                                       default => $class->DefaultLocale },
                       } );
 
     my $self = bless \%p, $class;
-    $self->{language} = DateTime::Language->new(language => $p{language})
-        unless (ref $self->{language});
+    $self->{locale} = DateTime::Locale->load($p{locale})
+        unless (ref $self->{locale});
 
     return $self;
 }
@@ -79,11 +77,11 @@ sub set
                       { year     => { type => SCALAR, optional => 1 },
                         month    => { type => SCALAR, optional => 1 },
                         day      => { type => SCALAR, optional => 1 },
-                        language => { type => SCALAR | OBJECT, optional => 1 },
+                        locale => { type => SCALAR | OBJECT, optional => 1 },
                       } );
 
-    if (exists $p{language} && ! ref $p{language}) {
-        $p{language} = DateTime::Language->new(language => $p{language})
+    if (exists $p{locale} && ! ref $p{locale}) {
+        $p{locale} = DateTime::Locale->load($p{locale})
     }
 
     $self->{$_} = $p{$_} for keys %p;
@@ -104,7 +102,7 @@ sub truncate {
     return $self;
 }
 
-sub language { $_[0]->{language} }
+sub locale { $_[0]->{locale} }
 
 sub is_leap_year {
     my $self = shift;
@@ -162,11 +160,11 @@ sub day_name {
 
     if ($self->{day} == 29) {
         my $name = 'hunyadi';
-        my $n = $self->{language}->day_names->[0];
+        my $n = $self->{locale}->day_names->[0];
         $name = ucfirst $name if $n eq ucfirst $n;
         return $name;
     } else {
-        return $self->{language}->day_names->[($self->day_of_week_0 || 7)-1];
+        return $self->{locale}->day_names->[($self->day_of_week_0 || 7)-1];
     }
 }
 
@@ -272,7 +270,7 @@ sub last_day_of_month {
     my %p = validate( @_,
                       { year   => { type => SCALAR },
                         month  => { type => SCALAR },
-                        language  => { type => SCALAR | OBJECT, optional => 1 },
+                        locale  => { type => SCALAR | OBJECT, optional => 1 },
                       }
                     );
     $p{day} = 29;
@@ -323,8 +321,8 @@ sub from_object {
                       { object => { type => OBJECT,
                                     can => 'utc_rd_values',
                                   },
-                        language => { type => SCALAR | OBJECT,
-                                      default => $class->DefaultLanguage },
+                        locale => { type => SCALAR | OBJECT,
+                                      default => $class->DefaultLocale },
                       },
                        );
 
@@ -337,7 +335,7 @@ sub from_object {
 
     return $class->new( year => $y, month => $m, day => $d,
                         rd_secs => $rd_secs||0, rd_nano => $rd_nano||0,
-                        language => $p{language} );
+                        locale => $p{locale} );
 }
 
 sub _rd2ymd {
@@ -385,8 +383,8 @@ sub from_epoch {
     my $class = shift;
     my %p = validate( @_,
                       { epoch => { type => SCALAR },
-                        language => { type => SCALAR | OBJECT,
-                                      default => $class->DefaultLanguage },
+                        locale => { type => SCALAR | OBJECT,
+                                      default => $class->DefaultLocale },
                       }
                     );
 
@@ -395,7 +393,7 @@ sub from_epoch {
     my ($y, $m, $d) = $class->_rd2ymd( $rd );
 
     return $class->new( year => $y, month => $m, day => $d,
-                        language => $p{language} );
+                        locale => $p{locale} );
 }
 
 sub now { shift->from_epoch( epoch => (scalar time), @_ ) }
@@ -488,7 +486,7 @@ my (@feasts, @feasts_en);
 
 sub feast {
     my $self = shift;
-    if (ref($self->{language}) =~ /English$/) {
+    if (ref($self->{locale}) =~ /::root$/) {
         return $feasts_en[ $self->day_of_year_0 ];
     } else {
         return $feasts[ $self->day_of_year_0 ];
@@ -1105,7 +1103,7 @@ same name.
 =item * new( ... )
 
 This class method accepts parameters for each date and time component:
-"year", "month", "day".  Additionally, it accepts a "language"
+"year", "month", "day".  Additionally, it accepts a "locale"
 parameter.
 
 The "rd_secs" parameter is also accepted. This parameter is only useful
@@ -1115,7 +1113,7 @@ in conversions to other calendars; this calendar does not use its value.
 
 This class method can be used to construct a new object from
 an epoch time instead of components.  Just as with the C<new()>
-method, it accepts a "language" parameter.
+method, it accepts a "locale" parameter.
 
 =item * now( ... )
 
@@ -1128,7 +1126,7 @@ This class method can be used to construct a new object from
 any object that implements the C<utc_rd_values()> method.  All
 C<DateTime::Calendar> modules must implement this method in order to
 provide cross-calendar compatibility.  This method accepts a
-"language" parameter.
+"locale" parameter.
 
 The time part of $object is stored, and will only be used if the created
 object is converted to another calendar. Only the date part of $object
@@ -1251,7 +1249,7 @@ imaginary date.
 =item * set( .. )
 
 This method can be used to change the local components of a date time,
-or its language.  This method accepts any parameter allowed by the
+or its locale.  This method accepts any parameter allowed by the
 C<new()> method.
 
 =item * truncate( to => ... )

@@ -2,7 +2,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME		    => 'DateTime::Calendar::Pataphysical',
     VERSION_FROM	=> 'lib/DateTime/Calendar/Pataphysical.pm',
-    PREREQ_PM		=> { DateTime::Language => 0,
+    PREREQ_PM		=> { DateTime::Locale => 0,
                          DateTime::Duration => 0,
                          Params::Validate => 0.52,
                        },

@@ -1,6 +1,8 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
-0.03  2003-??
+0.03  2003-09-02  the "Saint Lazare (station)" release
+    - move to the "Locale" system
+
     - store rd_seconds and rd_nanoseconds in the object in from_object;
       return this value if object is converted back to another calendar
 

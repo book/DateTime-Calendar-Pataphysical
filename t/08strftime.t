@@ -16,7 +16,7 @@ while (<DATA>)
     if (/^year =>/)
     {
         $params = $_;
-        $dt = eval "DateTime::Calendar::Pataphysical->new( $params, language => 'English' )";
+        $dt = eval "DateTime::Calendar::Pataphysical->new( $params, locale => 'English' )";
         next;
     }
 
