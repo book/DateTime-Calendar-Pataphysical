@@ -14,3 +14,4 @@ t/07lang.t
 t/08strftime.t
 t/09math.t
 t/10truncate.t
+META.yml                                Module meta-data (added by MakeMaker)

@@ -3,7 +3,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 41;
+use Test::More tests => 40;
 use DateTime::Calendar::Pataphysical;
 
 #########################
@@ -72,7 +72,6 @@ year => 124, month => 9, day => 7
 %W	33
 %y	24
 %Y	124
-%*	St. Fénéon in Bonds
 year => 124, month => 6, day => 29
 %%	%
 %A	Hunyadi

@@ -6,6 +6,7 @@ use vars qw($VERSION);
 
 $VERSION = '0.03';
 
+#use DateTime 0.08;
 use DateTime::Duration;
 use DateTime::Locale;
 use Params::Validate qw/validate SCALAR OBJECT/;
@@ -482,15 +483,10 @@ sub compare
 }
 
 
-my (@feasts, @feasts_en);
+my @feasts;
 
 sub feast {
-    my $self = shift;
-    if (ref($self->{locale}) =~ /::root$/) {
-        return $feasts_en[ $self->day_of_year_0 ];
-    } else {
-        return $feasts[ $self->day_of_year_0 ];
-    }
+    return $feasts[ $_[0]->day_of_year_0 ];
 }
 
 # Feasts from
@@ -885,168 +881,6 @@ Disparition de l'Ancien Breughel, incendiaire
 St Priape, franc-tireur
 Transfixion de Ste Messaline
 Le Termès
-EOF
-
-# My own translations
-@feasts_en = @feasts;
-@feasts_en[174..325] = split /\n+/, <<EOF;
-Erection of Surmale
-St. André Marcueil, ascetic cyclist
-St. Ellen, hilum
-St. Michet, idealist
-St. Ouducul, trouveur
-To Belgians
-St. Street Urchin, showman
-The Machine to Inspire Love
-St. Remezy, bishop in partibus
-Nativity of St. Tancrede, young man
-Testament of P. Uccello, evil illuminated
-St. Hari Seldon, galactic psychohistorian
-St. Valburge, succubus
-Sabbath
-Holy Adelphes, esoterists
-Holy Templars, adepts
-St. Dricarpe, proselyte
-St Nosocome, medical student
-St. Drop, military festival
-St. Thigh, patroness
-St. Registered, convert
-St. Sengle, deserter
-St. Masquerade, uniform
-Nativity of St Stephan, faun
-St. Poligraf Poligrafovitch, dog
-St. Pale, minor
-St. Valens, dream brother
-Dedication of the Tripod
-Baroness Skedaddle, dynamiter
-
-St. Ablou, page, and St. Haldern, duke
-Holy Owls, master singers
-The Mandrake, human-like nightshade
-St. Loincloth, confidant
-St. Aster and St. Vulpian, violators of the Nothingness
-St. Ganymede, professional
-The Hand of Glory
-The Painting Machine
-St. Cudgel, lunatic
-Remission of the Fishes
-St. Mackerel, intercessor
-St. Georges Dazet, squid in regard of silk
-Nativity of Maldoror, golden-haired corsair
-Exit of A. Dürer, hermetist
-Invention of Pataphysics
-Exit St. Domenico Theotocopouli, el Greco
-St. Hieronymus Bosch, demonarch
-The 27 Existences Resulting from the Even Books
-St. Barbel, procurer, and St. Cod the just
-Capture of the Furnace
-St. Doctor Moreau, islander
-Feast of the Polyhedrons
-Locus Solus
-St. Tupetu of Tupetu, organizer of lotteries
-Exit St. Goya, alchemist
-St. Escargot, sybarite
-St. Head of Chastity, penitent
-St. Turgescent, iconoclast
-Cymbalum Mundi
-
-Holy Crocodiles, crocodiles
-Feast of the floodgates
-Holy Trolls, jumping-jacks
-St. Susan Calvin, doctor
-St. Handful, widow, and St. Jutte, recluse
-St. Oneille, trollop
-St. Fénéon in Bonds
-St. Bougrelas, prince
-St. Boleslas and St. Ladislas, Poles
-St. Earwig, Barnabite
-Explosion of the Palotin
-Reprobation of Labour
-Evasion of St. Leonardo da Vinci, illusionist
-St. Equivoque, sansculotte
-Adoration of the Spike
-Deploration of St. Achras, breeder of polyhedrons
-St. Macrotatoure, train-bearer
-Rowing
-Occultation of St. Gauguin, oceanid
-St. Ti Belot, disciple
-Occultation of His Magnificence, Dr. Sandomir
-Holy Palotins of Phynances
-Holy Quatrezoneilles, Herdanpo, Mousched-Gogh, palotins
-St. Lumelle, horsewoman
-Holy Potassons, acolytes
-St. Prétentaine, virgin
-St. Hay, corypheus
-Nativity of St. Satie, Grand Partiary of the Church of Art
-Erratum
-
-Delivery of St. Joan, papess
-The Mustarder of the Pope
-St. Seat, underpope
-Nativity of St. H. Rousseau, customs officer
-St. Crouducul, trooper
-St. Cucufat, maecenas
-Nativity of Mr. Plume, proprietor
-Cuckoldry of Father Ubu
-Emptying
-St. Barbapoux, lover
-St. Memnon, dunnikin diver
-Holy Miches, catechumens
-St. Lunette, hermitess
-St. Sphincter, professed monk
-Holy Serpents of Bronze
-Nativity of St. Donatien A. François
-St. Woland, professor
-St. Anal, cordelier, and St. Trots, anagogic
-St. Fétatoire, super
-St. Colombine, expurged
-St. Pyrotechnics, illuminated
-Pataphysical Ontogeny
-Interpretation of Umour
-St. Purge, midwife
-Apparition of King Ubu
-St. Barbecue, naiad
-St. Long and St. Short, police officers
-St. Raca, hypocrite
-Defeat of the Boor
-
-St. Bouzine, spirit
-St. Lucullus, amateur (Bloomsday)
-St. Dondon, amazon
-St. Tripe, republican
-St. Ugolin the Meek
-St. God, retired
-St. Baby Toutout, evangelist
-St. Boudouille, bayadere
-St. Outre, psychiatrist
-St. Blutwurst, recteur
-Anointment of Talou VII, emperor of Ponukele
-St. Comfiture the devout et St. Cliche, donor
-Holy Instintestins, intimate councellors
-St. Colon, gunner
-St. Giborgne the venerable
-St. Inventory, poet
-St. Femelle, technician
-Visitation of Mother Ubu
-St. Sein, tautologist
-St. Perineum, zealot
-St. Speculum, confessor
-Feast of Gidouille
-St. Navel, gymnosophist
-St. Gray-gray, belly
-St. Bouffre, pontif
-St. Goulash, odalisque
-St. Gandouse, hygienist
-Pocket of Father Ubu
-Name of Ubu
-
-Feast of Father Ubu (Ubu of Summer)
-Commemoration of Father Ebe
-St. Scoundrel, purist et St. Fantomas, archangel
-Ascension of Mouchard, statistician, psychiatrist and policeman
-St. Villain, patrician
-St. Robot and St. Cornard, citizens
-St. Biribi, hotelier
 EOF
 
 1;
