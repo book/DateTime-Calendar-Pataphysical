@@ -1,7 +1,7 @@
 use strict;
 BEGIN { $^W = 1 }
 
-use Test::More tests => 180;
+use Test::More tests => 181;
 use DateTime::Calendar::Pataphysical;
 
 SKIP:{
@@ -88,3 +88,11 @@ for my $test ( [   1,  1, 29 ],
     is( @rd, 0, "$y-$m-$d (imaginary)" );
     ok( !defined $date->utc_rd_as_seconds, 'utc_rd_as_seconds not defined' );
 }
+
+my $date = DateTime->new( year => 2003, month => 1, day => 1,
+                          hour => 22, minute => 20,
+                          time_zone => 'America/Chicago' );
+$date = DateTime::Calendar::Pataphysical->from_object( object => $date );
+$date = DateTime->from_object( object => $date );
+
+is( $date->datetime, '2003-01-01T22:20:00', 'Keep time in conversion' );

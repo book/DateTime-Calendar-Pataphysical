@@ -53,6 +53,7 @@ sub new {
                       { year  => {type => SCALAR},
                         month => {type => SCALAR, default => 1},
                         day   => {type => SCALAR, default => 1},
+                        rd_secs   => { type => SCALAR, default => 0},
                         language  => { type => SCALAR | OBJECT,
                                        default => $class->DefaultLanguage },
                       } );
@@ -301,7 +302,7 @@ sub utc_rd_values {
              _floor(($cyear+72)/100) +  # century years
              _floor(($cyear+272)/400 ) +
              + ($month - 1) * 28 + $day;
-    return ($rd, 0);
+    return ($rd, $self->{rd_secs});
 }
 
 sub utc_rd_as_seconds {
@@ -334,7 +335,7 @@ sub from_object {
     my ($y, $m, $d) = $class->_rd2ymd( $rd_days );
 
     return $class->new( year => $y, month => $m, day => $d,
-                        language => $p{language} );
+                        rd_secs => $rd_secs, language => $p{language} );
 }
 
 sub _rd2ymd {
@@ -938,6 +939,9 @@ This class method accepts parameters for each date and time component:
 "year", "month", "day".  Additionally, it accepts a "language"
 parameter.
 
+The "rd_secs" parameter is also accepted. This parameter is only useful
+in conversions to other calendars; this calendar does not use its value.
+
 =item * from_epoch( epoch => $epoch, ... )
 
 This class method can be used to construct a new object from
@@ -957,7 +961,10 @@ C<DateTime::Calendar> modules must implement this method in order to
 provide cross-calendar compatibility.  This method accepts a
 "language" parameter.
 
-The time part of $object is ignored.
+The time part of $object is stored, and will only be used if the created
+object is converted to another calendar. Only the date part of $object
+is used to calculate the Pataphysical date. This calculation is based on
+the local time and date of $object.
 
 =item * last_day_of_month( ... )
 
