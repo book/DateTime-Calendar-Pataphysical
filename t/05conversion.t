@@ -1,0 +1,77 @@
+use strict;
+BEGIN { $^W = 1 }
+
+use Test::More tests => 139;
+use DateTime::Calendar::Pataphysical;
+
+SKIP:{
+    eval {require DateTime};
+    skip 'DateTime not installed', 132 if $@;
+
+#########################
+
+for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
+              [28,  1,   1 => 1873, 10,  5 ],
+              [ 1,  2,   1 => 1873, 10,  6 ],
+              [28,  2,   1 => 1873, 11,  2 ],
+              [ 1,  4,   1 => 1873, 12,  1 ],
+              [28,  6,   1 => 1874,  2, 22 ],
+              [ 1,  7,   1 => 1874,  2, 23 ],
+              [ 1,  9,   1 => 1874,  4, 20 ],
+              [ 1, 11,   1 => 1874,  6, 15 ],
+              [28, 11,   1 => 1874,  7, 12 ],
+              [29, 11,   1 => 1874,  7, 13 ],
+              [ 1, 12,   1 => 1874,  7, 14 ],
+              [28, 13,   1 => 1874,  9,  7 ],
+              [ 1,  1,   2 => 1874,  9,  8 ],
+              [ 1,  7,   2 => 1875,  2, 23 ],
+              [ 1,  1,   3 => 1875,  9,  8 ],
+              [28,  6,   3 => 1876,  2, 22 ],
+              [29,  6,   3 => 1876,  2, 23 ],
+              [ 1,  7,   3 => 1876,  2, 24 ],
+              [ 6,  7,   3 => 1876,  2, 29 ],
+              [ 7,  7,   3 => 1876,  3,  1 ],
+              [28, 13,   3 => 1876,  9,  7 ],
+              [28,  6,  27 => 1900,  2, 22 ],
+              [ 1,  7,  27 => 1900,  2, 23 ],
+              [28,  6, 127 => 2000,  2, 22 ],
+              [29,  6, 127 => 2000,  2, 23 ],
+              [ 1,  7, 127 => 2000,  2, 24 ],
+              [ 1,  7,1002 => 2875,  2, 23 ],
+              [ 1,  1,1003 => 2875,  9,  8 ],
+              [ 1,  7,2002 => 3875,  2, 23 ],
+              [ 1,  1,2003 => 3875,  9,  8 ],
+              [ 1,  7,-998 =>  875,  2, 23 ],
+              [ 1,  1,-997 =>  875,  9,  8 ], ) {
+    my ($dp, $mp, $yp, $yg, $mg, $dg) = @$test;
+
+    my $date = DateTime::Calendar::Pataphysical->new(
+                    year => $yp, month => $mp, day => $dp );
+    my $date_g = DateTime->from_object( object => $date );
+
+    isa_ok( $date_g, 'DateTime', 'converted '. $date->datetime );
+    is( $date_g->ymd, sprintf '%04d-%02d-%02d', $yg, $mg, $dg,
+            '... correctly' );
+
+    my $date_p = DateTime::Calendar::Pataphysical->from_object(
+                object => $date_g );
+    isa_ok( $date_p, "DateTime::Calendar::Pataphysical", 'and back' );
+    is( $date_p->ymd, sprintf '%03d-%02d-%02d', $yp, $mp, $dp,
+        '... correctly' );
+}
+} # end SKIP
+
+#                yyy  mm  dd
+for my $test ( [   1,  1, 29 ],
+               [   1,  2, 29 ],
+               [   1,  6, 29 ],
+               [   1, 10, 29 ],
+               [   1, 13, 29 ],
+               [   2,  6, 29 ],
+               [  27,  6, 29 ], ) {
+    my ($y, $m, $d) = @$test;
+    my $date = DateTime::Calendar::Pataphysical->new(
+                    year => $y, month => $m, day => $d );
+    my @rd = $date->utc_rd_values;
+    is( @rd, 0, "$y-$m-$d (imaginary)" );
+}
