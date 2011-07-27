@@ -161,11 +161,11 @@ sub day_name {
 
     if ($self->{day} == 29) {
         my $name = 'hunyadi';
-        my $n = $self->{locale}->day_names->[0];
+        my $n = $self->{locale}->day_format_wide->[0];
         $name = ucfirst $name if $n eq ucfirst $n;
         return $name;
     } else {
-        return $self->{locale}->day_names->[($self->day_of_week_0 || 7)-1];
+        return $self->{locale}->day_format_wide->[($self->day_of_week_0 || 7)-1];
     }
 }
 
