@@ -552,7 +552,7 @@ v Tautologie
 4 St Cosinus, savant
 4 Bse Fenouillard, sainte famille
 4 Exhibition de la Daromphe
-3 Nativité de l'OEstre, artificier
+3 Nativité de l'Œstre, artificier
 4 Ste Vadrouille, emblème
 4 St Homais d'Aquin, prudhomme
 4 Nativité de Sa Magnificence le baron Mollet (St Pipe)
@@ -648,7 +648,7 @@ v Drapaud (érection du)
 4 Sts Pirates et Flibustiers, thaumaturges
 4 St et Ste Cartouche, vétérinaires
 4 St Outlaw, aristocrate
-1 Chaire du Dr FaustrolL
+1 Chaire du Dr Faustroll
 2 Ostention du Bâton à Physique
 4 St Tank, animal
 4 St Weidman, patriarche
@@ -749,7 +749,7 @@ v Locus Solus
 v Cymbalum Mundi
 
 3 Sts Crocodiles, crocodiles
-4 Fête des écluses
+4 Fête des Écluses
 4 Sts Trolls, pantins
 4 Ste Susan Calvin, docteur
 4 Ste Poignée, veuve et Ste Jutte, recluse
