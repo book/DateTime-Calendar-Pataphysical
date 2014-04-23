@@ -1,9 +1,6 @@
 package DateTime::Calendar::Pataphysical;
 
 use strict;
-use vars qw($VERSION);
-
-$VERSION = '0.04';
 
 use utf8;
 
