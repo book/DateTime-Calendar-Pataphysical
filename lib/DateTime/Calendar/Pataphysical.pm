@@ -2,9 +2,7 @@ package DateTime::Calendar::Pataphysical;
 
 use strict;
 
-use vars qw($VERSION);
-
-$VERSION = '0.04';
+use utf8;
 
 use DateTime::Duration;
 use DateTime::Locale;
@@ -132,7 +130,7 @@ sub day_of_month_0 { $_[0]->{day} - 1 }
 *mday_0 = \&day_of_month_0;
 
 sub month_name {
-    return (qw/Absolu Haha As Sable Décervelage Gueules Pédale Clinamen
+    return (qw/Absolu Haha As Sable DÃ©cervelage Gueules PÃ©dale Clinamen
                Palotin Merdre Gidouille Tatane Phalle/)[$_[0]->{month}-1];
 }
 
@@ -510,75 +508,75 @@ sub type_of_feast {
 # Feasts from
 # http://perso.wanadoo.fr/mexiqueculture/nouvelles6-latumba.htm
 @feasts = map [/(.) (.+)/], split /\n+/, <<EOF;
-1 Nativité d'Alfred Jarry
+1 NativitÃ© d'Alfred Jarry
 4 St Ptyx, silentiaire (Abolition de)
-4 St Phénix, solipsiste et St Hyx, factotum
+4 St PhÃ©nix, solipsiste et St Hyx, factotum
 4 St Lucien de Samosate, voyageur
 4 St Bardamu, voyageur
-4 Ste Vérola, assistante sociale
+4 Ste VÃ©rola, assistante sociale
 4 St Alambic, abstracteur
 3 Absinthe, ci-devant St Alfred
 4 Descente du St Esprit (de Vin)
 v Dilution
-4 Ste Purée, sportswoman
+4 Ste PurÃ©e, sportswoman
 v Vide
 4 St Canterel, l'illuminateur
-4 St Sophrotatos l'Arménien, pataphysicien
-3 Éthernité
-4 St Ibicrate le Géomètre, pataphysicien
-v Céphalorgie
-v Flûtes de Pan
+4 St Sophrotatos l'ArmÃ©nien, pataphysicien
+3 Ã‰thernitÃ©
+4 St Ibicrate le GÃ©omÃ¨tre, pataphysicien
+v CÃ©phalorgie
+v FlÃ»tes de Pan
 4 Stes Grues, ophiophiles
-4 Ste Mélusine, souillarde de cuisine
+4 Ste MÃ©lusine, souillarde de cuisine
 4 St Venceslas, duc
 2 Emmanuel Dieu
 4 Ste Varia-Miriam, amphibie
-4 Sts Rakirs et Rastrons, porte-côtelettes
-4 Nativité de Sa Magnificence Opach
-4 St Joseb, notaire à la mode de Bretagne
+4 Sts Rakirs et Rastrons, porte-cÃ´telettes
+4 NativitÃ© de Sa Magnificence Opach
+4 St Joseb, notaire Ã  la mode de Bretagne
 4 Stes Gigolette et Gaufrette, dogaresses
 v Xylostomie
 v Le Jet Musical
 
-2 L'Âge du Dr Faustroll
+2 L'Ã‚ge du Dr Faustroll
 4 Dissolution d'E. Poe, dinomythurge
-4 St Gibus, franc-maçon
-4 Ste Berthe de Courrière, égérie
+4 St Gibus, franc-maÃ§on
+4 Ste Berthe de CourriÃ¨re, Ã©gÃ©rie
 4 Ste Belgique, nourrice
-4 Ste Tourte, lyrique et Ste Bévue, sociologue
-4 St Prout, abbé
-2 Fête du Haha
+4 Ste Tourte, lyrique et Ste BÃ©vue, sociologue
+4 St Prout, abbÃ©
+2 FÃªte du Haha
 v Tautologie
 4 St Panmuphle, huissier
 4 Sortie de St L. Cranach, apocalypticien
 4 St Cosinus, savant
 4 Bse Fenouillard, sainte famille
 4 Exhibition de la Daromphe
-3 Nativité de l'OEstre, artificier
-4 Ste Vadrouille, emblème
+3 NativitÃ© de l'OEstre, artificier
+4 Ste Vadrouille, emblÃ¨me
 4 St Homais d'Aquin, prudhomme
-4 Nativité de Sa Magnificence le baron Mollet (St Pipe)
-4 St Raphaël, apéritif et philistin
+4 NativitÃ© de Sa Magnificence le baron Mollet (St Pipe)
+4 St RaphaÃ«l, apÃ©ritif et philistin
 3 Strangulation de Bosse-de-Nage
 3 Zimzoum de Bosse-de-Nage
-2 Résurrection de Bosse-de-Nage
+2 RÃ©surrection de Bosse-de-Nage
 3 Chapeau de Bosse-de-Nage
 4 St Cl. Terrasse, musicien des Phynances
 4 St J.-P. Brisset, philologue, prince des penseurs
-4 Commémoration du Cure-dent
+4 CommÃ©moration du Cure-dent
 1 Occultation d'Alfred Jarry
 4 Fuite d'Ablou
-v Marée Terrestre
+v MarÃ©e Terrestre
 
-3 Nativité de Pantagruel
-4 Ste Rrose Sélavy, héroïne
+3 NativitÃ© de Pantagruel
+4 Ste Rrose SÃ©lavy, hÃ©roÃ¯ne
 4 Couronnement de Lord Patchogue, miroitier
 4 St Cravan, boxeur
 4 St Van Meegeren, faussaire
 4 St Omnibus, satyre
 4 St Cyrano de Bergerac, explorateur
 3 St Rimbe, oisif
-v Équarrissage pour tous
+v Ã‰quarrissage pour tous
 4 St Abstrait, bourreau
 4 St Ossian, barde postiche
 3 Dispute du Signe + et du Signe -
@@ -588,43 +586,43 @@ v Équarrissage pour tous
 4 St Cap, captain
 4 St Pangloss, humoriste passif
 4 St Chambernac, pauvriseur
-4 St Courtial des Péreires, aérostier et inventeur
+4 St Courtial des PÃ©reires, aÃ©rostier et inventeur
 4 St Olibrius, augure
-4 St Possible, schizophrène
-2 St Lautréamont
+4 St Possible, schizophrÃ¨ne
+2 St LautrÃ©amont
 4 St Quincey, critique d'art
 4 St Berbiguier, martyr
 4 St Lewis Carroll, professeur
-4 St Mensonger, évêque
-4 Ste Visité, fille du précédent
-4 Nativité de St Swift, chanoine
-v Traversée du Miroir
+4 St Mensonger, Ã©vÃªque
+4 Ste VisitÃ©, fille du prÃ©cÃ©dent
+4 NativitÃ© de St Swift, chanoine
+v TraversÃ©e du Miroir
 
 3 Noces de Balkis et de Salomon
-4 St Doublemain, idéologue
+4 St Doublemain, idÃ©ologue
 4 St Phlegmon, doctrinaire
-4 Ste Barbe (femme à), femme-canon
+4 Ste Barbe (femme Ã ), femme-canon
 4 Ste Savate, avocate
 4 St Navet et Ste Perruque, humanistes
 4 St Birbe, juge
 2 Conception du P. Ubu (A. J.)
-4 St Sagouin, homme d'état
+4 St Sagouin, homme d'Ã©tat
 1 Exaltation d'Ubu Roi (Ubu d'hiver)
-4 Nativité de St Grabbe, scherziste
-4 Ste Choupe, mère de famille
+4 NativitÃ© de St Grabbe, scherziste
+4 Ste Choupe, mÃ¨re de famille
 4 St Flaive, concierge
 4 Don Quichotte, champion du monde
 2 Khurmookum du Dr Faustroll
 4 St Nul, exempt
-4 St Moyen, français
+4 St Moyen, franÃ§ais
 4 Ste Lurette, joconde
-3 Gravidité de Mère Ubu
+3 GraviditÃ© de MÃ¨re Ubu
 4 St Sabre, allopathe
 4 Ste Tape, pompette
-1 César - Antechrist
+1 CÃ©sar - Antechrist
 4 Ste Viole, vierge et martyre
-4 Ste Pochetée, gouvernante
-3 Nativité de l'Archéoptéryx
+4 Ste PochetÃ©e, gouvernante
+3 NativitÃ© de l'ArchÃ©optÃ©ryx
 4 Monsieur Sisyphe
 4 St Tic, conjoint
 4 St Cervelas, penseur
@@ -633,25 +631,25 @@ v Aleph
 3 St Alaodine, virtuose
 4 Sts Hassassins, praticiens
 4 Astu
-1 Décervelage
+1 DÃ©cervelage
 4 Sts Giron, Pile et Cotice, palotins
-4 Sts Polonais, prolétaires
-4 Sts Forçats, poliorcètes
+4 Sts Polonais, prolÃ©taires
+4 Sts ForÃ§ats, poliorcÃ¨tes
 3 St Bordure, capitaine
-4 Dormition de Jacques Vaché, interprète
-v Drapaud (érection du)
-4 St Eustache, libérateur
-4 St Landru, gynécologue
-4 St Guillotin, médecin
+4 Dormition de Jacques VachÃ©, interprÃ¨te
+v Drapaud (Ã©rection du)
+4 St Eustache, libÃ©rateur
+4 St Landru, gynÃ©cologue
+4 St Guillotin, mÃ©decin
 4 Sts 4 Sans-Cou, enchanteurs
 3 Conscience d'Ubu
 4 St Mauvais, sujet
-4 St Mandrin, poète et philosophe
+4 St Mandrin, poÃ¨te et philosophe
 4 Sts Pirates et Flibustiers, thaumaturges
-4 St et Ste Cartouche, vétérinaires
+4 St et Ste Cartouche, vÃ©tÃ©rinaires
 4 St Outlaw, aristocrate
 1 Chaire du Dr FaustrolL
-2 Ostention du Bâton à Physique
+2 Ostention du BÃ¢ton Ã  Physique
 4 St Tank, animal
 4 St Weidman, patriarche
 4 St Petiot, expert
@@ -660,245 +658,245 @@ v Escrime
 v Repopulation
 v Lit de Procruste
 
-3 Dépucelage de Mère Ubu
-4 St Sigisbée, eunuque
-4 St Anthropoïde, policier
+3 DÃ©pucelage de MÃ¨re Ubu
+4 St SigisbÃ©e, eunuque
+4 St AnthropoÃ¯de, policier
 4 Ste Goule ou Gudule, institutrice
 4 Ste Gale, abbesse
 4 Ste Touche, postulante
-4 St Gueule, abbé
-3 Fête de la Chandelle Verte
-4 Ste Crêpe, laïque
-4 St Préservatif, bedeau
-4 St Baobab, célibataire
+4 St Gueule, abbÃ©
+3 FÃªte de la Chandelle Verte
+4 Ste CrÃªpe, laÃ¯que
+4 St PrÃ©servatif, bedeau
+4 St Baobab, cÃ©libataire
 4 St Membre, compilateur
 v Copulation
-4 Nativité de St J. Verne, globe-trotter en chambre
+4 NativitÃ© de St J. Verne, globe-trotter en chambre
 v Alice au Pays des Merveilles
-4 St Münchhausen, baron
-4 Le Bétrou, théurge
-4 Nativité de St Deibler, prestidigitateur
-4 St Sade ès liens
+4 St MÃ¼nchhausen, baron
+4 Le BÃ©trou, thÃ©urge
+4 NativitÃ© de St Deibler, prestidigitateur
+4 St Sade Ã¨s liens
 4 St Lafleur, valet
 v Lavement
 2 St Sexe, stylite
 4 Occultation de St J. Torma, euphoriste
 4 Conversion de St Matorel, bateleur
-4 Ste Marmelade, inspirée
+4 Ste Marmelade, inspirÃ©e
 3 L'Amour Absolu, deliquium
-4 Ste Tabagie, cosmogène
+4 Ste Tabagie, cosmogÃ¨ne
 4 Sts Hylactor et Pamphagus
-v Mouvement Perpétuel
+v Mouvement PerpÃ©tuel
 
-3 Érection du Surmâle
-4 St André Marcueil, ascète cycliste
+3 Ã‰rection du SurmÃ¢le
+4 St AndrÃ© Marcueil, ascÃ¨te cycliste
 4 St Ellen, hile
-4 St Michet, idéaliste
-4 St Ouducul, trouvère
+4 St Michet, idÃ©aliste
+4 St Ouducul, trouvÃ¨re
 4 Vers Belges
 4 St Gavroche, forain
-3 La Machine à Inspirer l'Amour
-4 St Remezy, évêque in partibus
-4 Nativité de St Tancrède, jeune homme
-4 Testament de P. Uccello, le mal illuminé
+3 La Machine Ã  Inspirer l'Amour
+4 St Remezy, Ã©vÃªque in partibus
+4 NativitÃ© de St TancrÃ¨de, jeune homme
+4 Testament de P. Uccello, le mal illuminÃ©
 4 St Hari Seldon, psychohistorien galactique
 4 Ste Valburge, succube
 v Sabbat
-3 Sts Adelphes, ésotéristes
+3 Sts Adelphes, Ã©sotÃ©ristes
 4 Sts Templiers, adeptes
-4 St Dricarpe, prosélyte
+4 St Dricarpe, prosÃ©lyte
 4 St Nosocome, carabin
-4 Ste Goutte, fête militaire
+4 Ste Goutte, fÃªte militaire
 4 Ste Cuisse, dame patronnesse
 4 St Inscrit, Converti
-2 St Sengle, déserteur
+2 St Sengle, dÃ©serteur
 4 St Masquarade, uniforme
-4 Nativité de St Stéphane, faune
+4 NativitÃ© de St StÃ©phane, faune
 4 St Poligraf Poligrafovitch, chien
-4 St Pâle, mineur
-3 St Valens, frère onirique
-v Dédicace du Tripode
+4 St PÃ¢le, mineur
+3 St Valens, frÃ¨re onirique
+v DÃ©dicace du Tripode
 4 Bse Escampette, dynamiteuse
 
 3 St Ablou, page et St Haldern, duc
-4 Sts Hiboux, maîtres-chanteurs
-4 La Mandragore, solanée androïde
+4 Sts Hiboux, maÃ®tres-chanteurs
+4 La Mandragore, solanÃ©e androÃ¯de
 4 St Pagne, confident
-4 Sts Aster et Vulpian, violateurs du Néant
-4 St Ganymède, professionnel
+4 Sts Aster et Vulpian, violateurs du NÃ©ant
+4 St GanymÃ¨de, professionnel
 v La Main de Gloire
-3 La Machine à Peindre
+3 La Machine Ã  Peindre
 4 Ste Trique, lunatique
-4 Rémission des Poissons
+4 RÃ©mission des Poissons
 4 St Maquereau, intercesseur
 4 St Georges Dazet, poulpe au regard de soie
-4 Nativité de Maldoror, corsaire aux cheveux d'or
-4 Sortie d'A. Dürer, hermétiste
+4 NativitÃ© de Maldoror, corsaire aux cheveux d'or
+4 Sortie d'A. DÃ¼rer, hermÃ©tiste
 * Invention de la 'Pataphysique
 4 Exit St Domenico Theotocopouli, el Greco
-4 St Hiéronymus Bosch, démonarque
-v Les 27 Êtres Issus des Livres Pairs
+4 St HiÃ©ronymus Bosch, dÃ©monarque
+v Les 27 ÃŠtres Issus des Livres Pairs
 4 St Barbeau, procureur et Ste Morue, juste
 v Capture du Fourneau
 4 St Docteur Moreau, insulaire
-2 Fête des Polyèdres
+2 FÃªte des PolyÃ¨dres
 v Locus Solus
 4 St Tupetu de Tupetu, organisateur de loteries
 4 Exit St Goya, alchimiste
 4 St Escargot, sybarite
-4 Ste Hure de Chasteté, pénitente
+4 Ste Hure de ChastetÃ©, pÃ©nitente
 4 St Turgescent, iconoclaste
 v Cymbalum Mundi
 
 3 Sts Crocodiles, crocodiles
-4 Fête des écluses
+4 FÃªte des Ã©cluses
 4 Sts Trolls, pantins
 4 Ste Susan Calvin, docteur
-4 Ste Poignée, veuve et Ste Jutte, recluse
+4 Ste PoignÃ©e, veuve et Ste Jutte, recluse
 4 Ste Oneille, gourgandine
-4 St Fénéon ès Liens
+4 St FÃ©nÃ©on Ã¨s Liens
 3 St Bougrelas, prince
 4 Sts Boleslas et Ladislas, polonais
 4 St Forficule, Barnabite
 v Explosion du Palotin
-v Réprobation du Travail
-4 Esquive de St Léonard (de Vinci), illusionniste
-4 St Équivoque, sans-culotte
+v RÃ©probation du Travail
+4 Esquive de St LÃ©onard (de Vinci), illusionniste
+4 St Ã‰quivoque, sans-culotte
 3 Adoration du Pal
-4 Déploration de St Achras, éleveur de Polyèdres
+4 DÃ©ploration de St Achras, Ã©leveur de PolyÃ¨dres
 4 St Macrotatoure, caudataire
 v Canotage
-4 Occultation de St Gauguin, océanide
-4 St Ti Belot, séide
+4 Occultation de St Gauguin, ocÃ©anide
+4 St Ti Belot, sÃ©ide
 4 Occultation de Sa Magnificence le Dr Sandomir
 2 Sts Palotins des Phynances
 4 Sts Quatrezoneilles, Herdanpo, Mousched-Gogh, palotins
-4 Ste Lumelle, écuyère
+4 Ste Lumelle, Ã©cuyÃ¨re
 4 Sts Potassons, acolythes
-4 Ste Prétentaine, rosière
-4 St Foin, coryphée
-4 Nativité de St Satie, Grand Parcier de l'Église d'Art
+4 Ste PrÃ©tentaine, rosiÃ¨re
+4 St Foin, coryphÃ©e
+4 NativitÃ© de St Satie, Grand Parcier de l'Ã‰glise d'Art
 v Erratum
 
 3 Accouchement de Ste Jeanne, papesse
 v Le Moutardier du Pape
-4 St Siège, sous-pape
-4 Nativité de St H. Rousseau, douanier
+4 St SiÃ¨ge, sous-pape
+4 NativitÃ© de St H. Rousseau, douanier
 4 St Crouducul, troupier
-4 St Cucufat, mécène
-4 Nativité de M. Plume, propriétaire
+4 St Cucufat, mÃ©cÃ¨ne
+4 NativitÃ© de M. Plume, propriÃ©taire
 2 Cocuage de M. le P. Ubu
 v Vidange
 4 St Barbapoux, amant
 4 St Memnon, vidangeur
-4 Stes Miches, catéchumènes
+4 Stes Miches, catÃ©chumÃ¨nes
 4 Ste Lunette, solitaire
-4 St Sphincter, profès
+4 St Sphincter, profÃ¨s
 3 Sts Serpents d'Airain
-4 Nativité de St Donatien A. François
+4 NativitÃ© de St Donatien A. FranÃ§ois
 4 St Woland, professeur
 4 St Anal, cordelier et Ste Foire, anagogue
-4 Ste Fétatoire, super
-4 Ste Colombine, expurgée
-4 Ste Pyrotechnie, illuminée
-* Ontogénie Pataphysique
-3 Interprétation de L'Umour
+4 Ste FÃ©tatoire, super
+4 Ste Colombine, expurgÃ©e
+4 Ste Pyrotechnie, illuminÃ©e
+* OntogÃ©nie Pataphysique
+3 InterprÃ©tation de L'Umour
 4 Ste Purge, sage-femme
 2 Apparition D'Ubu Roi
-4 Ste Barbaque, naïade
+4 Ste Barbaque, naÃ¯ade
 4 Sts Courts et Longs, gendarmes
 4 St Raca, cagot
-v Défaite du Mufle
+v DÃ©faite du Mufle
 
 3 Ste Bouzine, esprit
 4 St Lucullus, amateur (Bloomsday)
 4 Ste Dondon, amazone
-4 Ste Tripe, républicaine
+4 Ste Tripe, rÃ©publicaine
 4 St Ugolin, mansuet
-4 St Dieu, retraité
-4 St Bébé Toutout, évangéliste
-3 Ste Boudouille, bayadère
+4 St Dieu, retraitÃ©
+4 St BÃ©bÃ© Toutout, Ã©vangÃ©liste
+3 Ste Boudouille, bayadÃ¨re
 4 Ste Outre, psychiatre
 4 St Boudin, recteur
-4 Sacre de Talou VII, empereur du Ponukélé
-4 Ste Confiture, dévote et Ste Cliche, donatrice
+4 Sacre de Talou VII, empereur du PonukÃ©lÃ©
+4 Ste Confiture, dÃ©vote et Ste Cliche, donatrice
 4 Sts Instintestins, conseillers intimes
 4 St Colon, artilleur
-3 Ste Giborgne, vénérable
-4 St Inventaire, poète
+3 Ste Giborgne, vÃ©nÃ©rable
+4 St Inventaire, poÃ¨te
 4 Ste Femelle, technicienne
-2 Visitation de Mère Ubu
+2 Visitation de MÃ¨re Ubu
 4 St Sein, tautologue
-4 St Périnée, zélateur
-4 St Spéculum, confesseur
-2 Fête de Gidouille
+4 St PÃ©rinÃ©e, zÃ©lateur
+4 St SpÃ©culum, confesseur
+2 FÃªte de Gidouille
 4 St Ombilic, gymnosophiste
 4 St Gris-gris, ventre
 4 St Bouffre, pontife
 4 Ste Goulache, odalisque
-4 Ste Gandouse, hygiéniste
-v Poche du Père Ubu
+4 Ste Gandouse, hygiÃ©niste
+v Poche du PÃ¨re Ubu
 2 Nom d'Ubu
 
-1 Fête du P. Ubu (Ubu d'été)
-4 Commémoration du P. Ébé
+1 FÃªte du P. Ubu (Ubu d'Ã©tÃ©)
+4 CommÃ©moration du P. Ã‰bÃ©
 4 Ste Crapule, puriste et St Fantomas, archange
 4 Ascension du Mouchard, statisticien, psychiatre et policier
 4 St Arsouille, patricien
 4 Sts Robot et Cornard, citoyens
 4 St Biribi, taulier
-2 Susception du Croc à Merdre
-4 Sts Écrase-Merdre, sectateurs
-4 Sts Pieds Nickelés, trinité
+2 Susception du Croc Ã  Merdre
+4 Sts Ã‰crase-Merdre, sectateurs
+4 Sts Pieds NickelÃ©s, trinitÃ©
 4 Stes Canicule et Canule, jouvencelles
 4 Sts Cannibales, philanthropes
-4 St Dada, prophète
-4 Ste Anne, pèlerine, énergumène
+4 St Dada, prophÃ¨te
+4 Ste Anne, pÃ¨lerine, Ã©nergumÃ¨ne
 2 Procession aux Phynances
 4 Transfiguration de St V. van Gogh, transmutateur
 4 Ste Flamberge, voyante
 4 St Trou, chauffeur
 4 Ste Taloche, matrone
-4 St Tiberge, frère quêteur
+4 St Tiberge, frÃ¨re quÃªteur
 4 Sts Catoblepas, lord et Anoblepas, amiral
-2 Ubu ès Liens
+2 Ubu Ã¨s Liens
 4 St Pissembock, oncle
 4 St Pissedoux, caporal des hommes libres
 4 St Panurge, moraliste
-4 St Glé, neurologue-aliéniste
-4 St Pistolet à Merdre, jubilaire
-4 Nativité de St Bruggle
+4 St GlÃ©, neurologue-aliÃ©niste
+4 St Pistolet Ã  Merdre, jubilaire
+4 NativitÃ© de St Bruggle
 v Le soleil solide froid
 
 3 St Chibre, planton
-4 Ste Ruth, zélatrice
+4 Ste Ruth, zÃ©latrice
 4 St Zebb, passe-partout
 4 St Mnester, confesseur
 2 Assomption de Ste Messaline
 v Penis Angelicus
 4 St Patrobas, pompier
-3 Ste Léda, ajusteuse
-4 St Godemiché, économe
+3 Ste LÃ©da, ajusteuse
+4 St GodemichÃ©, Ã©conome
 4 Ste Nitouche, orante
-4 Ste Lèchefrite, botteuse
+4 Ste LÃ¨chefrite, botteuse
 4 Ste Andouille, amphibologue
-4 Ste Bitre, ouvreuse et St Étalon, couvreur
+4 Ste Bitre, ouvreuse et St Ã‰talon, couvreur
 3 Bataille de Morsang
 3 Mort de Dionysos, surhomme
-4 Nativité de St Vibescu, pohète et Commémoration de Ste Cuculine d'Ancône
-4 Ste Gallinacée, cocotte
+4 NativitÃ© de St Vibescu, pohÃ¨te et CommÃ©moration de Ste Cuculine d'AncÃ´ne
+4 Ste GallinacÃ©e, cocotte
 4 St Lingam, bouche-trou
-4 St Prélote, capucin
+4 St PrÃ©lote, capucin
 4 St Pie VIII, navigant
 3 St Erbrand, polytechnicien
 2 Ste Dragonne, pyrophage
 4 St Lazare, gare
-4 Ste Orchidée, aumonière
-4 Nativité apparente d'Artaud le Momo
+4 Ste OrchidÃ©e, aumoniÃ¨re
+4 NativitÃ© apparente d'Artaud le Momo
 4 Disparition de l'Ancien Breughel, incendiaire
 4 St Priape, franc-tireur
 3 Transfixion de Ste Messaline
-v Le Termès
+v Le TermÃ¨s
 EOF
 
 1;
@@ -924,6 +922,8 @@ sub add_duration {
 
 1;
 __END__
+
+=encoding utf-8
 
 =head1 NAME
 
@@ -1097,11 +1097,11 @@ Returns the feast or vacuation of the given date.
 
 Returns the type of feast or vacuation.
 
-  '*' means Fête Suprème Première première
-  '1' means Fête Suprème Première seconde
-  '2' means Fête Suprème Seconde
-  '3' means Fête Suprème Tierce
-  '4' means Fête Suprème Quarte
+  '*' means FÃªte SuprÃ¨me PremiÃ¨re premiÃ¨re
+  '1' means FÃªte SuprÃ¨me PremiÃ¨re seconde
+  '2' means FÃªte SuprÃ¨me Seconde
+  '3' means FÃªte SuprÃ¨me Tierce
+  '4' means FÃªte SuprÃ¨me Quarte
   'v' means Vacuation
 
 =item * is_imaginary
