@@ -1,7 +1,7 @@
 package DateTime::Calendar::Pataphysical;
 
 use strict;
-
+use warnings;
 use utf8;
 
 use DateTime::Duration;
