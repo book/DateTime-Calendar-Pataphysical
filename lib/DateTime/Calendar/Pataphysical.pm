@@ -672,7 +672,7 @@ v Lit de Procruste
 4 St Membre, compilateur
 v Copulation
 4 Nativité de St J. Verne, globe-trotter en chambre
-v Alice au Pays des Merveilles
+3 Alice au Pays des Merveilles
 4 St Münchhausen, baron
 4 Le Bétrou, théurge
 4 Nativité de St Deibler, prestidigitateur
