@@ -118,7 +118,7 @@ sub is_leap_year {
 sub year    { $_[0]->{year} }
 
 sub month   { $_[0]->{month} }
-*mon = \&month;          
+*mon = \&month;
 
 sub month_0 { $_[0]->{month}-1 }
 *mon_0 = \&month_0;
@@ -180,7 +180,7 @@ sub week_number {
 }
 
 sub week_year { $_[0]->year }
-    
+
 sub week { $_[0]->week_year, $_[0]->week_number }
 
 sub day_of_year {
@@ -396,7 +396,7 @@ sub from_epoch {
                     );
 
     my $rd = int($p{epoch}/(24*60*60) + 719163);
-    
+
     my ($y, $m, $d) = $class->_rd2ymd( $rd );
 
     return $class->new( year => $y, month => $m, day => $d,
@@ -472,9 +472,9 @@ sub subtract_datetime {
 
 use constant INFINITY     =>       100 ** 100 ** 100 ;
 use constant NEG_INFINITY => -1 * (100 ** 100 ** 100);
-            
+
 sub _compare_overload
-{       
+{
     # note: $_[1]->compare( $_[0] ) is an error when $_[1] is not a
     # DateTime (such as the INFINITY value)
     return $_[2] ? - $_[0]->compare( $_[1] ) : $_[0]->compare( $_[1] );
@@ -946,7 +946,7 @@ irregular Gregorian calendar.
 
 This module is designed to be easy to use in combination with
 DateTime. Most of its methods correspond to a DateTime method of the
-same name. 
+same name.
 
 =head1 METHODS
 
