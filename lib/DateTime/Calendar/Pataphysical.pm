@@ -923,6 +923,18 @@ sub add_duration {
 1;
 __END__
 
+=for Pod::Coverage::TrustPod
+     DefaultLocale
+     day_0
+     day_of_month_0
+     day_of_week_0
+     day_of_year_0
+     locale
+     mday_0
+     mon
+     mon_0
+     month_0
+
 =encoding utf-8
 
 =head1 NAME
