@@ -51,7 +51,7 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
     my $date_g = DateTime->from_object( object => $date );
 
     isa_ok( $date_g, 'DateTime', 'converted date'. $date->datetime );
-    is( $date_g->ymd, sprintf '%04d-%02d-%02d', $yg, $mg, $dg,
+    is( $date_g->ymd, sprintf( '%04d-%02d-%02d', $yg, $mg, $dg ),
             '... correctly' );
     is( $date->utc_rd_as_seconds, $date_g->utc_rd_as_seconds,
         'utc_rd_as_seconds is equal' );
@@ -59,7 +59,7 @@ for my $test ([ 1,  1,   1 => 1873,  9,  8 ],
     my $date_p = DateTime::Calendar::Pataphysical->from_object(
                 object => $date_g );
     isa_ok( $date_p, "DateTime::Calendar::Pataphysical", 'and back' );
-    is( $date_p->ymd, sprintf '%0.3d-%0.2d-%0.2d', $yp, $mp, $dp,
+    is( $date_p->ymd, sprintf( '%0.3d-%0.2d-%0.2d', $yp, $mp, $dp ),
         '... correctly' );
 }
 
