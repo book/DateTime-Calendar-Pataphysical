@@ -1199,6 +1199,8 @@ list. See http://lists.perl.org/ for more details.
 
 Eugene van der Pijll <pijll@gmx.net>
 
+Maintained by Philippe Bruhat (BooK) since 2014.
+
 =head1 COPYRIGHT
 
 Copyright (c) 2003, 2004 Eugene van der Pijll.  All rights reserved.
