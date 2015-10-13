@@ -1,6 +1,17 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
+0.06  2015-10-13  the "Fête du Haha" release
+    - properly list Eugene van der Pijll as the author,
+      and Philippe Bruhat as the maintainer
+
+    - fix warnings in test output (Dave Rolsky)
+
+    - fix locale tests so they pass with the next release of DateTime-Locale
+      (Dave Rolsky)
+
 0.05  2014-05-01  the "Reprobation of Labour" release
+    - new maintainer: Philippe Bruhat (BooK)
+
     - suppress the warning about the deprecated "day_names" method
       in DateTime::Locale
 
