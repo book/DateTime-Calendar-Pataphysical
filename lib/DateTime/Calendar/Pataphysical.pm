@@ -1195,6 +1195,12 @@ The Hunyadis are not taken into account.
 Support for this module is provided via the datetime@perl.org email
 list. See http://lists.perl.org/ for more details.
 
+=head1 SEE ALSO
+
+L<DateTime>
+
+datetime@perl.org mailing list
+
 =head1 AUTHOR
 
 Eugene van der Pijll <pijll@gmx.net>
@@ -1204,13 +1210,10 @@ Maintained by Philippe Bruhat (BooK) since 2014.
 =head1 COPYRIGHT
 
 Copyright (c) 2003, 2004 Eugene van der Pijll.  All rights reserved.
+
+=head1 LICENSE
+
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
-=head1 SEE ALSO
-
-L<DateTime>
-
-datetime@perl.org mailing list
 
 =cut
