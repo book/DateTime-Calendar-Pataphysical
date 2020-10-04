@@ -1137,7 +1137,7 @@ specify which values to truncate, and it may be one of "year",
 =item * add_duration( $duration_object )
 
 This method adds a C<DateTime::Duration> to the current datetime.  See
-the L<DateTime::Duration|DateTime::Duration> docs for more detais.
+the L<DateTime::Duration|DateTime::Duration> docs for more details.
 
 =item * add( DateTime::Duration->new parameters )
 
