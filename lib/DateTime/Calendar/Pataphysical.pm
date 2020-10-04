@@ -994,7 +994,7 @@ provide cross-calendar compatibility.  This method accepts a
 
 The time part of $object is stored, and will only be used if the created
 object is converted to another calendar. Only the date part of $object
-is used to calculate the Pataphysical date. This calculation is based on
+is used to calculate the pataphysical date. This calculation is based on
 the local time and date of $object.
 
 =item * last_day_of_month( ... )
