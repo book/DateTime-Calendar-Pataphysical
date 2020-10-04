@@ -1058,14 +1058,14 @@ Equivalent to
 =item * is_leap_year
 
 This method returns a true or false indicating whether or not the
-datetime object is in a leap year.
+DateTime object is in a leap year.
 
 =item * week
 
  ($week_year, $week_number) = $dt->week
 
 Returns information about the calendar week which contains this
-datetime object. The values returned by this method are also available
+DateTime object. The values returned by this method are also available
 separately through the week_year and week_number methods.
 
 =item * week_year
@@ -1118,7 +1118,7 @@ Returns the type of feast or vacuation.
 
 =item * is_imaginary
 
-Returns true or false indicating whether the datetime object represents an
+Returns true or false indicating whether the DateTime object represents an
 imaginary date.
 
 =item * set( .. )
@@ -1136,7 +1136,7 @@ specify which values to truncate, and it may be one of "year",
 
 =item * add_duration( $duration_object )
 
-This method adds a C<DateTime::Duration> to the current datetime.  See
+This method adds a C<DateTime::Duration> to the current DateTime.  See
 the L<DateTime::Duration|DateTime::Duration> docs for more details.
 
 =item * add( DateTime::Duration->new parameters )
