@@ -994,7 +994,7 @@ provide cross-calendar compatibility.  This method accepts a
 
 The time part of $object is stored, and will only be used if the created
 object is converted to another calendar. Only the date part of $object
-is used to calculate the Pataphysical date. This calculation is based on
+is used to calculate the pataphysical date. This calculation is based on
 the local time and date of $object.
 
 =item * last_day_of_month( ... )
@@ -1058,14 +1058,14 @@ Equivalent to
 =item * is_leap_year
 
 This method returns a true or false indicating whether or not the
-datetime object is in a leap year.
+DateTime object is in a leap year.
 
 =item * week
 
  ($week_year, $week_number) = $dt->week
 
 Returns information about the calendar week which contains this
-datetime object. The values returned by this method are also available
+DateTime object. The values returned by this method are also available
 separately through the week_year and week_number methods.
 
 =item * week_year
@@ -1118,7 +1118,7 @@ Returns the type of feast or vacuation.
 
 =item * is_imaginary
 
-Returns true or false indicating whether the datetime object represents an
+Returns true or false indicating whether the DateTime object represents an
 imaginary date.
 
 =item * set( .. )
@@ -1136,8 +1136,8 @@ specify which values to truncate, and it may be one of "year",
 
 =item * add_duration( $duration_object )
 
-This method adds a C<DateTime::Duration> to the current datetime.  See
-the L<DateTime::Duration|DateTime::Duration> docs for more detais.
+This method adds a C<DateTime::Duration> to the current DateTime.  See
+the L<DateTime::Duration|DateTime::Duration> docs for more details.
 
 =item * add( DateTime::Duration->new parameters )
 
