@@ -1,5 +1,10 @@
 Revision history for Perl extension DateTime::Calendar::Pataphysical.
 
+0.07 2023-01-28 BOOK - the "St Anthropoïde, policier" release
+    - include documentation and distribution improvements by Paul Cochrane (PTC)
+    - reformat the documentation with better headers and links
+    - make the whole distribution UTF-8
+
 0.06 2015-10-13 BOOK - the "Fête du Haha" release
     - properly list Eugene van der Pijll as the author,
       and Philippe Bruhat as the maintainer
