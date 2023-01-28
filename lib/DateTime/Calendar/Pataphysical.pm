@@ -900,27 +900,7 @@ v Le Termès
 EOF
 
 1;
-__END__
 
-sub add_duration {
-    my ($self, $dur) = @_;
-
-    my $dm = $dur->delta_months;
-    my $dd = $dur->delta_days;
-
-    $self->{day}   += $dd;
-    $self->{month} += _floor(($self->{day}-1)/29);
-    $self->{day}    = ($self->{day}-1)%29 + 1;
-
-    $self->{month} += $dm;
-    $self->{year}  += _floor(($self->{year}-1)/13);
-    $self->{month}  = ($self->{month}-1)%13 + 1;
-
-    return $self;
-}
-
-
-1;
 __END__
 
 =for Pod::Coverage::TrustPod
